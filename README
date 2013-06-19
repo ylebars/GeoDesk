@@ -1,0 +1,56 @@
+GeoDesk is a tool to get geographical data from digitalised maps.
+
+  To compile it, you need a C++-2011 compiler and CMake
+(<http://www.cmake.org/>) version 2.6 or greater. It depends on library Boost
+(<http://www.boost.org/>) version 1.31.1 or greater, library Qt4
+(<http://qt-project.org/>) version 4.6 or greater, and Doxygen
+(<http://www.stack.nl/~dimitri/doxygen/>) to generate the documentation.
+
+  Compile GeoDesk is pretty straightforward. We recommend you create a directory
+called "build" in GeoDesk directory. Then go to this directory and simply use
+CMake to create compilation file for your environment. For instance, on UNIX
+based operating systems, the following commands will compile GeoDesk (when you
+are on "build" directory):
+
+    $ cmake .. -G "Unix Makefiles"
+    $ make
+
+  The resulting object file will then be located in
+"build/src/bin/${COMPILATION_MODE}/," where "${COMPILATION_MODE}" is the name
+of the compilation mode used, such as "Debug" or "Release." To install the
+software, type as root:
+
+    # make install
+
+  To create documentation, simply use the "doc" entry in your compilation
+files. For instance, on UNIX based operating systems:
+
+    $ make doc
+
+  Resulting documentations will be in "doc/."
+
+  Of course, types of compilation can be changed using CMake, see CMake
+documentation for more details.
+
+  To obtain some help, simply type:
+
+    $ geodesk --help
+
+  The documentation generates main pages.
+
+  If the compiler you are using is GCC, we suggest you set the following
+variables (adapt this to your compiler if needed):
+
+//Flags used by the compiler during debug builds.
+CMAKE_CXX_FLAGS_DEBUG:STRING=-g -std=c++11 -pedantic -Wall -DG_DEBUG -pipe
+
+//Flags used by the compiler during release minsize builds.
+CMAKE_CXX_FLAGS_MINSIZEREL:STRING=-std=c++11 -march=native -Os -DNDEBUG -pipe
+
+//Flags used by the compiler during release builds (/MD /Ob1 /Oi
+// /Ot /Oy /Gs will produce slightly less optimized but smaller
+// files).
+CMAKE_CXX_FLAGS_RELEASE:STRING=-std=c++11 -march=native -O2 -DNDEBUG -pipe
+
+//Flags used by the compiler during Release with Debug Info builds.
+CMAKE_CXX_FLAGS_RELWITHDEBINFO:STRING=-std=c++11 -march=native -O2 -g -pipe
