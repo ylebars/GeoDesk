@@ -8,6 +8,16 @@
 
 /**
  * \mainpage
+ * GeoDesk is a tool to get geographical data from digitalised maps.
+ *
+ * Command : 
+ *
+ *      geodesk [Options]
+ *
+ * Supported options:
+ *
+ *      -h [ --help ]         Display help message.
+ *      -v [ --version ]      Display program version.
  */
 
 #include <config.hpp>
