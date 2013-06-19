@@ -28,6 +28,8 @@
 #include <iostream>
 #include <QApplication>
 
+#include "mainboard.hpp"
+
 /**
  * \brief Main function of the program.
  * \param argc Count of arguments transmitted to the program.
@@ -80,6 +82,10 @@ int cpp_main (int argc, char** argv) {
   }
 
   if (stop) return 0;
+
+  /* Main board of the program. */
+  GUI::MainBoard mainBoard;
+  mainBoard.show();
 
   return app.exec();
 }

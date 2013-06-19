@@ -25,6 +25,7 @@ set(
 )
 set(
   QT_HEADER_FILES
+  mainboard.hpp
 )
 QT4_WRAP_CPP(QT_HEADERS_MOC ${QT_HEADER_FILES})
 
