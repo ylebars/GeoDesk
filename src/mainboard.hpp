@@ -24,7 +24,7 @@ namespace GUI {
        * \brief Default constructor.
        * \param parent Pointer to the parent widget.
        */
-      MainBoard (QWidget* parent = nullptr) {
+      MainBoard (QWidget* parent = nullptr): QWidget (parent) {
         /* Label to identify image. */
         QLabel* labelImg = new QLabel (this);
         /* Pixmap of the image. */
