@@ -1,0 +1,25 @@
+#ifndef CONFIG_HPP_IN
+#define CONFIG_HPP_IN
+
+/**
+ * \file config.hpp.in
+ * \brief Set variables dependant on the version of the code.
+ * \author Le Bars, Yoann
+ * \version 1.0
+ * \date 2012/01/27
+ * \date 2013/01/04
+ * \date 2013/06/19
+ */
+
+#include <boost/concept_check.hpp>
+
+namespace Configuration {
+  /// \brief Major version number.
+  const unsigned versionMajor = @VERSION_MAJOR@;
+  /// \brief Minor version number.
+  const unsigned versionMinor = @VERSION_MINOR@;
+  /// \brief Patch version number.
+  const unsigned patchVersion = @PATCH_VERSION@;
+}
+
+#endif  // #ifndef CONFIG_HPP_IN
