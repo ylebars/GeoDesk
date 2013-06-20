@@ -22,6 +22,7 @@ find_package(Qt4 REQUIRED)
 set(
   SOURCE_FILES
   main.cpp
+  mainboard.cpp
 )
 set(
   QT_HEADER_FILES

@@ -10,48 +10,75 @@
  * \date 2013/06/20
  */
 
+#include <boost/concept_check.hpp>
 #include <QtGui>
 #include <QWidget>
 #include <QLabel>
-#include <QPixmap>
-#include <QGridLayout>
 #include <QMenu>
 #include <QAction>
+#include <QKeySequence>
 #include <QApplication>
+#include <QString>
 
 /// \brief Namespace for GUI definition.
 namespace GUI {
   class MainBoard: public QMainWindow {
+      Q_OBJECT
+
     public:
       /// \brief Default constructor.
       MainBoard () {
-        /* Centre zone of the main window. */
-        QWidget* mapWidget = new QWidget;
+        imageLabel = new QLabel;
+        imageLabel->setBackgroundRole(QPalette::Base);
+        imageLabel->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+        imageLabel->setScaledContents(true);
 
-        /* Label to identify image. */
-        QLabel* labelImg = new QLabel (this);
-        /* Pixmap of the image. */
-        QPixmap* pixmapImg =
-          new QPixmap ("/home/ylebars/Images/carte_congo.jpg");
-        labelImg->setPixmap(*pixmapImg);
-
-        /* Layout in which place the image. */
-        QGridLayout* gridLayout = new QGridLayout;
-        gridLayout->addWidget(labelImg);
-        mapWidget->setLayout(gridLayout);
-
-        setCentralWidget(mapWidget);
-        setWindowTitle("GeoDesk");
+        scrollArea = new QScrollArea;
+        scrollArea->setBackgroundRole(QPalette::Dark);
+        scrollArea->setWidget(imageLabel);
+        setCentralWidget(scrollArea);
 
         /* File menu entry. */
         QMenu* fileMenu = menuBar()->addMenu(tr("&File"));
 
+        /* Open an image. */
+        QAction* openAction = new QAction (tr("&Open"), this);
+        fileMenu->addAction(openAction);
+        openAction->setShortcut(QKeySequence("Ctrl+O"));
+        connect(openAction, SIGNAL(triggered()), this, SLOT(openFile()));
+
         /* Leave the program. */
-        QAction* quitAction = new QAction(tr("&Quit"), this);
+        QAction* quitAction = new QAction (tr("&Quit"), this);
         fileMenu->addAction(quitAction);
         quitAction->setShortcut(QKeySequence("Ctrl+Q"));
         connect(quitAction, SIGNAL(triggered()), qApp, SLOT(quit()));
+
+        setWindowTitle("GeoDesk");
+        resize(500, 400);
       }
+
+      /// \brief Destructor.
+      virtual ~MainBoard () {
+        delete imageLabel;
+        delete scrollArea;
+      }
+
+    protected slots:
+      /// \brief Get the name of the file to be opened.
+      void openFile ();
+
+    private:
+      /// \brief Image scale factor.
+      double scaleFactor;
+
+      /// \brief Name of the file to be opened.
+      QString fileName;
+
+      /// \brief Label for image manipulation.
+      QLabel* imageLabel;
+
+      /// \brief Allows to scroll in the image.
+      QScrollArea* scrollArea;
   };
 }
 
