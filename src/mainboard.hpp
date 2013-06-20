@@ -22,8 +22,6 @@
 /// \brief Namespace for GUI definition.
 namespace GUI {
   class MainBoard: public QMainWindow {
-      Q_OBJECT
-
     public:
       /// \brief Default constructor.
       MainBoard () {
