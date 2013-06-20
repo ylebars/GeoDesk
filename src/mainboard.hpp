@@ -7,24 +7,29 @@
  * \author Le Bars, Yoann
  * \version 1.0
  * \date 2013/06/19
+ * \date 2013/06/20
  */
 
+#include <QtGui>
 #include <QWidget>
 #include <QLabel>
 #include <QPixmap>
 #include <QGridLayout>
+#include <QMenu>
+#include <QAction>
+#include <QApplication>
 
 /// \brief Namespace for GUI definition.
 namespace GUI {
-  class MainBoard: public QWidget {
+  class MainBoard: public QMainWindow {
       Q_OBJECT
 
     public:
-      /**
-       * \brief Default constructor.
-       * \param parent Pointer to the parent widget.
-       */
-      MainBoard (QWidget* parent = nullptr): QWidget (parent) {
+      /// \brief Default constructor.
+      MainBoard () {
+        /* Centre zone of the main window. */
+        QWidget* mapWidget = new QWidget;
+
         /* Label to identify image. */
         QLabel* labelImg = new QLabel (this);
         /* Pixmap of the image. */
@@ -35,7 +40,19 @@ namespace GUI {
         /* Layout in which place the image. */
         QGridLayout* gridLayout = new QGridLayout;
         gridLayout->addWidget(labelImg);
-        setLayout(gridLayout);
+        mapWidget->setLayout(gridLayout);
+
+        setCentralWidget(mapWidget);
+        setWindowTitle("GeoDesk");
+
+        /* File menu entry. */
+        QMenu* fileMenu = menuBar()->addMenu(tr("&File"));
+
+        /* Leave the program. */
+        QAction* quitAction = new QAction(tr("&Quit"), this);
+        fileMenu->addAction(quitAction);
+        quitAction->setShortcut(QKeySequence("Ctrl+Q"));
+        connect(quitAction, SIGNAL(triggered()), qApp, SLOT(quit()));
       }
   };
 }
