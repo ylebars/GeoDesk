@@ -10,15 +10,13 @@
 #include <QString>
 #include <QLabel>
 #include <QPixmap>
-#include <QGridLayout>
-#include <QScrollArea>
 #include <QImage>
 #include <QMessageBox>
 
 #include "mainboard.hpp"
 
 /* -- Open an image. ------------------------------------------------------ */
-void GUI::MainBoard::openFile () {
+void GUI::MainBoard::on_actionOpen_triggered () {
   fileName = QFileDialog::getOpenFileName(this, tr("Open file"),
                                           QDir::currentPath());
 

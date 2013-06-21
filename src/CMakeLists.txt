@@ -30,10 +30,17 @@ set(
 )
 QT4_WRAP_CPP(QT_HEADERS_MOC ${QT_HEADER_FILES})
 
+set (
+  QT_FORM_FILES
+  ${PROJECT_SOURCE_DIR}/ressources/mainboard.ui
+)
+QT4_WRAP_UI(QT_FORM_HEADERS ${QT_FORM_FILES})
+
 link_directories(
         ${Boost_LIBRARY_DIRS}
 )
 include_directories(
+        ${CMAKE_CURRENT_BINARY_DIR}
         ${Boost_INCLUDE_DIRS}
 )
 
@@ -44,6 +51,7 @@ add_executable(
   ${EXECUTABLE_NAME}
   ${SOURCE_FILES}
   ${QT_HEADERS_MOC}
+  ${QT_FORM_HEADERS}
 )
 target_link_libraries(
   ${EXECUTABLE_NAME}

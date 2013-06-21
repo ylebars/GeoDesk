@@ -39,9 +39,6 @@
 int cpp_main (int argc, char** argv) {
   namespace po = boost::program_options;
 
-  /* Initialisation of Qt. */
-  const QApplication app (argc, argv);
-
   /* -- Reading the command line. -- */
 
   /* Declaring supported options. */
@@ -82,6 +79,9 @@ int cpp_main (int argc, char** argv) {
   }
 
   if (stop) return 0;
+
+  /* Initialisation of Qt. */
+  const QApplication app (argc, argv);
 
   /* Main board of the program. */
   GUI::MainBoard mainBoard;

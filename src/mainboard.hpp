@@ -15,10 +15,10 @@
 #include <QWidget>
 #include <QLabel>
 #include <QMenu>
-#include <QAction>
-#include <QKeySequence>
 #include <QApplication>
 #include <QString>
+
+#include "ui_mainboard.h"
 
 /// \brief Namespace for GUI definition.
 namespace GUI {
@@ -27,34 +27,16 @@ namespace GUI {
 
     public:
       /// \brief Default constructor.
-      MainBoard () {
+      explicit MainBoard (): QMainWindow () {
+        ui.setupUi(this);
+
         imageLabel = new QLabel;
-        imageLabel->setBackgroundRole(QPalette::Base);
         imageLabel->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
         imageLabel->setScaledContents(true);
 
         scrollArea = new QScrollArea;
-        scrollArea->setBackgroundRole(QPalette::Dark);
         scrollArea->setWidget(imageLabel);
         setCentralWidget(scrollArea);
-
-        /* File menu entry. */
-        QMenu* fileMenu = menuBar()->addMenu(tr("&File"));
-
-        /* Open an image. */
-        QAction* openAction = new QAction (tr("&Open"), this);
-        fileMenu->addAction(openAction);
-        openAction->setShortcut(QKeySequence("Ctrl+O"));
-        connect(openAction, SIGNAL(triggered()), this, SLOT(openFile()));
-
-        /* Leave the program. */
-        QAction* quitAction = new QAction (tr("&Quit"), this);
-        fileMenu->addAction(quitAction);
-        quitAction->setShortcut(QKeySequence("Ctrl+Q"));
-        connect(quitAction, SIGNAL(triggered()), qApp, SLOT(quit()));
-
-        setWindowTitle("GeoDesk");
-        resize(500, 400);
       }
 
       /// \brief Destructor.
@@ -65,7 +47,7 @@ namespace GUI {
 
     protected slots:
       /// \brief Get the name of the file to be opened.
-      void openFile ();
+      void on_actionOpen_triggered ();
 
     private:
       /// \brief Image scale factor.
@@ -79,6 +61,9 @@ namespace GUI {
 
       /// \brief Allows to scroll in the image.
       QScrollArea* scrollArea;
+
+      /// \brief Get the GUI description.
+      Ui::MainBoard ui;
   };
 }
 
