@@ -14,6 +14,8 @@
 #include <QPixmap>
 #include <QImage>
 #include <QMessageBox>
+#include <QPoint>
+#include <iostream>
 
 #include "mainboard.hpp"
 
@@ -34,6 +36,10 @@ void GUI::MainBoard::on_actionOpen_triggered () {
     scaleFactor = 1.0;
 
     imageLabel->adjustSize();
+
+    ui.actionZoomIn->setEnabled(true);
+    ui.actionZoomOut->setEnabled(true);
+    ui.actionNormalSize->setEnabled(true);
   }
 }
 
@@ -53,4 +59,21 @@ void GUI::MainBoard::on_actionNormalSize_triggered () {
   scaleFactor = 1.0;
   ui.actionZoomIn->setEnabled(true);
   ui.actionZoomOut->setEnabled(true);
+}
+
+/* -- When mouse is left-clicked. ----------------------------------------- */
+void GUI::MainBoard::mousePressEvent(QMouseEvent* event) {
+  QWidget::mousePressEvent(event);
+  if (!imageLabel->pixmap()) return;
+  if (event->button() != Qt::LeftButton) return;
+
+  /* Localisation where clicked in the frame. */
+  const QPoint localisation = event->pos() - centralWidget()->pos();
+
+  std::cout << "Position: " << localisation.x() << ' ' << localisation.y()
+            << '\n'
+            << "Horizontal scroll bar: "
+            << scrollArea->horizontalScrollBar()->value() << '\n'
+            << "Vertical scroll bar:"
+            << scrollArea->verticalScrollBar()->value() << '\n';
 }

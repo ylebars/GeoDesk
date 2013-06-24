@@ -41,6 +41,10 @@ namespace GUI {
         scrollArea = new QScrollArea;
         scrollArea->setWidget(imageLabel);
         setCentralWidget(scrollArea);
+
+        ui.actionZoomIn->setEnabled(false);
+        ui.actionZoomOut->setEnabled(false);
+        ui.actionNormalSize->setEnabled(false);
       }
 
       /// \brief Destructor.
@@ -61,6 +65,13 @@ namespace GUI {
 
       /// \brief Gets the image back to its normal size.
       void on_actionNormalSize_triggered ();
+
+    protected:
+      /**
+       * \brief What to do when mouse is clicked.
+       * \param event The event that indicates mouse button is clicked.
+       */
+      virtual void mousePressEvent (QMouseEvent *event);
 
     private:
       /// \brief Image scale factor.
