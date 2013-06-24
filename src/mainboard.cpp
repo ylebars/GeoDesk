@@ -4,6 +4,8 @@
  * \author Le Bars, Yoann
  * \version 1.0
  * \date 2013/06/20
+ * \date 2013/06/21
+ * \date 2013/06/24
  */
 
 #include <QFileDialog>
@@ -30,6 +32,25 @@ void GUI::MainBoard::on_actionOpen_triggered () {
 
     imageLabel->setPixmap(QPixmap::fromImage(image));
     scaleFactor = 1.0;
-    imageLabel->resize(imageLabel->pixmap()->size());
+
+    imageLabel->adjustSize();
   }
+}
+
+/* -- Zoom into image. ---------------------------------------------------- */
+void GUI::MainBoard::on_actionZoomIn_triggered () {
+  scaleImage(1.25);
+}
+
+/* -- Zoom out an image. -------------------------------------------------- */
+void GUI::MainBoard::on_actionZoomOut_triggered () {
+  scaleImage(0.8);
+}
+
+/* -- Set image to its normal size. --------------------------------------- */
+void GUI::MainBoard::on_actionNormalSize_triggered () {
+  imageLabel->adjustSize();
+  scaleFactor = 1.0;
+  ui.actionZoomIn->setEnabled(true);
+  ui.actionZoomOut->setEnabled(true);
 }

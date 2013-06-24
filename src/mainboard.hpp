@@ -8,6 +8,8 @@
  * \version 1.0
  * \date 2013/06/19
  * \date 2013/06/20
+ * \date 2013/16/21
+ * \date 2013/06/24
  */
 
 #include <boost/concept_check.hpp>
@@ -17,6 +19,8 @@
 #include <QMenu>
 #include <QApplication>
 #include <QString>
+#include <QAction>
+#include <QScrollBar>
 
 #include "ui_mainboard.h"
 
@@ -49,6 +53,15 @@ namespace GUI {
       /// \brief Get the name of the file to be opened.
       void on_actionOpen_triggered ();
 
+      /// \brief Zooms in an image.
+      void on_actionZoomIn_triggered ();
+
+      /// \brief Zooms out an image.
+      void on_actionZoomOut_triggered ();
+
+      /// \brief Gets the image back to its normal size.
+      void on_actionNormalSize_triggered ();
+
     private:
       /// \brief Image scale factor.
       double scaleFactor;
@@ -64,6 +77,29 @@ namespace GUI {
 
       /// \brief Get the GUI description.
       Ui::MainBoard ui;
+
+      /**
+       * \brief Set scroll bar if needed.
+       * \param scrollBar Scroll bar to be adjusted.
+       * \param factor Factor for adjusting.
+       */
+      void adjustScrollBar (QScrollBar* scrollBar, double factor) {
+        scrollBar->setValue(static_cast<int>(factor * scrollBar->value()
+                               + ((factor - 1) * scrollBar->pageStep() / 2)));
+      }
+
+      /// \brief Change scale of an image.
+      void scaleImage (double factor) {
+        Q_ASSERT(imageLabel->pixmap());
+        scaleFactor *= factor;
+        imageLabel->resize(scaleFactor * imageLabel->pixmap()->size());
+
+        adjustScrollBar(scrollArea->horizontalScrollBar(), factor);
+        adjustScrollBar(scrollArea->verticalScrollBar(), factor);
+
+        ui.actionZoomIn->setEnabled(scaleFactor < 3.0);
+        ui.actionZoomOut->setEnabled(scaleFactor > 0.333);
+      }
   };
 }
 
