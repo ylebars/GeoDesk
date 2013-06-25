@@ -6,6 +6,7 @@
  * \date 2013/06/20
  * \date 2013/06/21
  * \date 2013/06/24
+ * \date 2013/06/25
  */
 
 #include <QFileDialog>
@@ -68,12 +69,19 @@ void GUI::MainBoard::mousePressEvent(QMouseEvent* event) {
   if (event->button() != Qt::LeftButton) return;
 
   /* Localisation where clicked in the frame. */
-  const QPoint localisation = event->pos() - centralWidget()->pos();
+  const QPoint localisation =
+    event->pos() - imageLabel->pos() - scrollArea->pos();
+  /* Abscissa of the point clicked in the image. */
+  const double x =
+    static_cast<double>(localisation.x()
+                        + scrollArea->horizontalScrollBar()->value())
+      / scaleFactor;
+  /* Ordinate of the point clicked in the image. */
+  const double y =
+    static_cast<double>(localisation.y()
+                        + scrollArea->verticalScrollBar()->value())
+      / scaleFactor;
 
-  std::cout << "Position: " << localisation.x() << ' ' << localisation.y()
-            << '\n'
-            << "Horizontal scroll bar: "
-            << scrollArea->horizontalScrollBar()->value() << '\n'
-            << "Vertical scroll bar:"
-            << scrollArea->verticalScrollBar()->value() << '\n';
+  std::cout << "Image width: " << imageLabel->pixmap()->width() << '\n'      
+             << "Position in image: (" << x << ", " << y << ")\n" ;
 }

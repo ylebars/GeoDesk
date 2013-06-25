@@ -56,7 +56,7 @@ int cpp_main (int argc, char** argv) {
   options(cmd).run(), vm);
   po::notify(vm);
 
-  /* Indicates wether or not the program should be stopped. */
+  /* Indicates whether or not the program should be stopped. */
   bool stop = false;
 
   /* Check if help message should be displayed. */
