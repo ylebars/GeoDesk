@@ -7,6 +7,7 @@
  * \date 2013/06/21
  * \date 2013/06/24
  * \date 2013/06/25
+ * \date 2013/06/26
  */
 
 #include <QFileDialog>
@@ -16,6 +17,7 @@
 #include <QImage>
 #include <QMessageBox>
 #include <QPoint>
+#include <QRect>
 #include <iostream>
 
 #include "mainboard.hpp"
@@ -63,25 +65,28 @@ void GUI::MainBoard::on_actionNormalSize_triggered () {
 }
 
 /* -- When mouse is left-clicked. ----------------------------------------- */
-void GUI::MainBoard::mousePressEvent(QMouseEvent* event) {
+void GUI::MainBoard::mousePressEvent (QMouseEvent* event) {
   QWidget::mousePressEvent(event);
   if (!imageLabel->pixmap()) return;
   if (event->button() != Qt::LeftButton) return;
 
+  /* ScrollArea geometry. */
+  const QRect scrollAreaGeometry = scrollArea->geometry();
   /* Localisation where clicked in the frame. */
   const QPoint localisation =
     event->pos() - imageLabel->pos() - scrollArea->pos();
   /* Abscissa of the point clicked in the image. */
   const double x =
     static_cast<double>(localisation.x()
-                        + scrollArea->horizontalScrollBar()->value())
+                          + scrollArea->horizontalScrollBar()->value())
       / scaleFactor;
   /* Ordinate of the point clicked in the image. */
   const double y =
     static_cast<double>(localisation.y()
-                        + scrollArea->verticalScrollBar()->value())
+                          + scrollArea->verticalScrollBar()->value())
       / scaleFactor;
 
-  std::cout << "Image width: " << imageLabel->pixmap()->width() << '\n'      
-             << "Position in image: (" << x << ", " << y << ")\n" ;
+  std::cout << "Image width: " << imageLabel->pixmap()->width() << '\n'
+            << "Image height: " << imageLabel->pixmap()->height() << '\n'
+            << "Position in image: (" << x << ", " << y << ")\n" ;
 }
