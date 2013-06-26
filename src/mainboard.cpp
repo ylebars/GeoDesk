@@ -16,8 +16,8 @@
 #include <QPixmap>
 #include <QImage>
 #include <QMessageBox>
-#include <QPoint>
-#include <QRect>
+#include <cstddef>
+#include <algorithm>
 #include <iostream>
 
 #include "mainboard.hpp"
@@ -70,23 +70,11 @@ void GUI::MainBoard::mousePressEvent (QMouseEvent* event) {
   if (!imageLabel->pixmap()) return;
   if (event->button() != Qt::LeftButton) return;
 
-  /* ScrollArea geometry. */
-  const QRect scrollAreaGeometry = scrollArea->geometry();
-  /* Localisation where clicked in the frame. */
-  const QPoint localisation =
-    event->pos() - imageLabel->pos() - scrollArea->pos();
-  /* Abscissa of the point clicked in the image. */
-  const double x =
-    static_cast<double>(localisation.x()
-                          + scrollArea->horizontalScrollBar()->value())
-      / scaleFactor;
-  /* Ordinate of the point clicked in the image. */
-  const double y =
-    static_cast<double>(localisation.y()
-                          + scrollArea->verticalScrollBar()->value())
-      / scaleFactor;
+  /* Coordinate of the point being clicked. */
+  const auto pair = getMousePosition(event->pos());
 
   std::cout << "Image width: " << imageLabel->pixmap()->width() << '\n'
             << "Image height: " << imageLabel->pixmap()->height() << '\n'
-            << "Position in image: (" << x << ", " << y << ")\n" ;
+            << "Position in image: (" << pair.first << ", " << pair.second
+            << ")\n" ;
 }

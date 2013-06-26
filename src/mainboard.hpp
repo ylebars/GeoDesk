@@ -11,6 +11,7 @@
  * \date 2013/16/21
  * \date 2013/06/24
  * \date 2013/06/25
+ * \date 2013/06/26
  */
 
 #include <boost/concept_check.hpp>
@@ -22,6 +23,8 @@
 #include <QString>
 #include <QAction>
 #include <QScrollBar>
+#include <QPoint>
+#include <utility>
 
 #include "ui_mainboard.h"
 
@@ -111,6 +114,62 @@ namespace GUI {
 
         ui.actionZoomIn->setEnabled(scaleFactor < 3.0);
         ui.actionZoomOut->setEnabled(scaleFactor > 0.333);
+      }
+
+      /**
+       * \brief Get mouse pointer position in the image referential.
+       * \param pos Position given by the event.
+       * \return A pair containing abscissa and ordinate of the point being
+       * clicked.
+       */
+      std::pair<double, double> getMousePosition (const QPoint &pos) {
+        /* Minimum of horizontal scroll bar. */
+        const double horizontalMinimum =
+          static_cast<double>(scrollArea->horizontalScrollBar()->minimum());
+        /* Maximum of horizontal scroll bar. */
+        const double horizontalMaximum =
+          static_cast<double>(scrollArea->horizontalScrollBar()->maximum());
+        /* Minimum of vertical scroll bar. */
+        const double verticalMinimum =
+          static_cast<double>(scrollArea->verticalScrollBar()->minimum());
+        /* Maximum of vertical scroll bar. */
+        const double verticalMaximum =
+          static_cast<double>(scrollArea->verticalScrollBar()->maximum());
+        /* Quantity of pixel not shown according horizontal orientation. */
+        const double horizontalRemaining =
+          static_cast<double>(std::max(imageLabel->pixmap()->width()
+                              - imageLabel->width(), 0));
+        /* Quantity of pixel not shown according vertical orientation. */
+        const double verticalRemaining =
+          static_cast<double>(std::max(imageLabel->pixmap()->width()
+                              - imageLabel->width(), 0));
+        /* How much horizontally scrolled. */
+        const double horizontalPercentage =
+          (horizontalMaximum > horizontalMinimum)?
+            (static_cast<double>(scrollArea->horizontalScrollBar()->value())
+             - horizontalMinimum)
+            / (horizontalMaximum - horizontalMinimum): 0. ;
+        /* How much vertically scrolled. */
+        const double verticalPercentage =
+          (verticalMaximum > verticalMinimum)?
+            (static_cast<double>(scrollArea->verticalScrollBar()->value())
+             - verticalMinimum)
+            / (verticalMaximum - verticalMinimum): 0. ;
+        /* Localisation where clicked in the frame. */
+        const QPoint localisation =
+          pos - imageLabel->pos() - scrollArea->pos();
+        /* Abscissa of the point clicked in the image. */
+        const double x =
+          (static_cast<double>(localisation.x())
+            + (horizontalRemaining * horizontalPercentage))
+          / scaleFactor;
+        /* Ordinate of the point clicked in the image. */
+        const double y =
+          (static_cast<double>(localisation.y())
+            + (verticalRemaining * verticalPercentage))
+          / scaleFactor;
+
+        return {x, y};
       }
   };
 }
