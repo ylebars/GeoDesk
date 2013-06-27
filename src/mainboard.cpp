@@ -22,7 +22,6 @@
 #include <iostream>
 
 #include "mainboard.hpp"
-#include "projection.hpp"
 
 /* -- Open an image. ------------------------------------------------------ */
 void GUI::MainBoard::on_actionOpen_triggered () {
@@ -73,10 +72,28 @@ void GUI::MainBoard::mousePressEvent (QMouseEvent* event) {
   if (event->button() != Qt::LeftButton) return;
 
   /* Coordinate of the point being clicked. */
-  const auto pair = getMousePosition(event->pos());
+  const Point2D pos = getMousePosition(event->pos());
 
-  std::cout << "Image width: " << imageLabel->pixmap()->width() << '\n'
-            << "Image height: " << imageLabel->pixmap()->height() << '\n'
-            << "Position in image: (" << pair.first << ", " << pair.second
-            << ")\n" ;
+  if (numberReferencePoints < r1.size()) {
+    r1[numberReferencePoints] = pos;
+    std::cout << "Latitude: ";
+    /* New latitude. */
+    double x;
+    std::cin >> x;
+    r2[numberReferencePoints].x() = x;
+    std::cout << "Longitude: ";
+    /* New longitude. */
+    double y;
+    std::cin >> y;
+    r2[numberReferencePoints++].y() = y;
+
+    if (numberReferencePoints == 3) {
+      change = computeCoefficients(r1, r2).transpose();
+    }
+  }
+  else {
+    const Eigen::Vector3d x (pos.x(), pos.y(), 1.);
+    const Eigen::Vector2d b = change * x;
+    std::cout << "Coordinates: " << b << '\n';
+  }
 }

@@ -12,6 +12,7 @@
  * \date 2013/06/24
  * \date 2013/06/25
  * \date 2013/06/26
+ * \date 2013/06/27
  */
 
 #include <boost/concept_check.hpp>
@@ -25,17 +26,22 @@
 #include <QScrollBar>
 #include <QPoint>
 #include <utility>
+#include <vector>
 
 #include "ui_mainboard.h"
+#include "projection.hpp"
 
 /// \brief Namespace for GUI definition.
 namespace GUI {
+  using namespace Projection;
+
   class MainBoard: public QMainWindow {
       Q_OBJECT
 
     public:
       /// \brief Default constructor.
-      explicit MainBoard (): QMainWindow () {
+      explicit MainBoard (): QMainWindow (), r1 (3), r2 (3),
+          numberReferencePoints (0) {
         ui.setupUi(this);
 
         imageLabel = new QLabel;
@@ -78,8 +84,17 @@ namespace GUI {
       virtual void mousePressEvent (QMouseEvent *event);
 
     private:
+      /// \brief Matrix to compute referential change.
+      Eigen::Matrix<double, 2, 3> change;
+
       /// \brief Image scale factor.
       double scaleFactor;
+
+      /// \brief Reference points in image coordinates.
+      std::vector<Point2D> r1;
+
+      /// \brief Reference points in geographical coordinates.
+      std::vector<Point2D> r2;
 
       /// \brief Name of the file to be opened.
       QString fileName;
@@ -92,6 +107,9 @@ namespace GUI {
 
       /// \brief Get the GUI description.
       Ui::MainBoard ui;
+
+      /// \brief Number of given reference point .
+      size_t numberReferencePoints;
 
       /**
        * \brief Set scroll bar if needed.
@@ -122,7 +140,7 @@ namespace GUI {
        * \return A pair containing abscissa and ordinate of the point being
        * clicked.
        */
-      std::pair<double, double> getMousePosition (const QPoint &pos) {
+      Point2D getMousePosition (const QPoint &pos) {
         /* Minimum of horizontal scroll bar. */
         const double horizontalMinimum =
           static_cast<double>(scrollArea->horizontalScrollBar()->minimum());
@@ -169,7 +187,7 @@ namespace GUI {
             + (verticalRemaining * verticalPercentage))
           / scaleFactor;
 
-        return {x, y};
+        return Point2D (x, y);
       }
   };
 }
