@@ -8,6 +8,7 @@
  * \date 2013/06/24
  * \date 2013/06/25
  * \date 2013/06/26
+ * \date 2013/06/27
  */
 
 #include <QFileDialog>
@@ -21,6 +22,7 @@
 #include <iostream>
 
 #include "mainboard.hpp"
+#include "projection.hpp"
 
 /* -- Open an image. ------------------------------------------------------ */
 void GUI::MainBoard::on_actionOpen_triggered () {

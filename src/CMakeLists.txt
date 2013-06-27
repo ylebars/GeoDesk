@@ -11,11 +11,15 @@ configure_file(
 )
 include_directories(${PROJECT_BINARY_DIR})
 
+set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/CMakeModules)
+
 find_package(
         Boost 
         1.31.1
         REQUIRED program_options
 )
+
+find_package(Eigen3 REQUIRED)
 
 find_package(Qt4 REQUIRED)
 
@@ -23,6 +27,7 @@ set(
   SOURCE_FILES
   main.cpp
   mainboard.cpp
+  projection.hpp
 )
 set(
   QT_HEADER_FILES
@@ -42,6 +47,7 @@ link_directories(
 include_directories(
         ${CMAKE_CURRENT_BINARY_DIR}
         ${Boost_INCLUDE_DIRS}
+        ${EIGEN3_INCLUDE_DIR}
 )
 
 include(${QT_USE_FILE})
