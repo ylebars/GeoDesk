@@ -55,6 +55,7 @@ namespace GUI {
         ui.actionZoomIn->setEnabled(false);
         ui.actionZoomOut->setEnabled(false);
         ui.actionNormalSize->setEnabled(false);
+        ui.actionSaveWorldFile->setEnabled(false);
       }
 
       /// \brief Destructor.
@@ -75,6 +76,14 @@ namespace GUI {
 
       /// \brief Gets the image back to its normal size.
       void on_actionNormalSize_triggered ();
+
+      /**
+       * \brief Save a world file associated to an image.
+       *
+       * Information about world file format can be found at:
+       * <http://en.wikipedia.org/wiki/World_file>
+       */
+      void on_actionSaveWorldFile_triggered ();
 
     protected:
       /**

@@ -8,6 +8,7 @@
  * \author Le Bars, Yoann
  * \version 1.0
  * \date 2013/06/27
+ * \date 2013/06/28
  */
 
 #include <boost/concept_check.hpp>
@@ -75,6 +76,9 @@ namespace Projection {
    * \param r1 Vector containing reference points in image coordinates.
    * \param r2 Vector containing reference points in geographical coordinates.
    * \return Vector containing projection coefficients.
+   *
+   * Information on coefficients can be found at:
+   * <http://en.wikipedia.org/wiki/World_file>
    */
   inline Coefficients computeCoefficients (const std::vector<Point2D> &r1,
                                            const std::vector<Point2D> &r2) {

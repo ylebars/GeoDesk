@@ -13,7 +13,6 @@
  */
 
 #include <QFileDialog>
-#include <QString>
 #include <QLabel>
 #include <QPixmap>
 #include <QImage>
@@ -22,7 +21,10 @@
 #include <algorithm>
 #include <QInputDialog>
 #include <QMessageBox>
-#include <sstream>
+#include <QFileInfo>
+#include <QDir>
+#include <QFile>
+#include <QTextStream>
 
 #include "mainboard.hpp"
 
@@ -49,6 +51,7 @@ void GUI::MainBoard::on_actionOpen_triggered () {
     ui.actionNormalSize->setEnabled(true);
 
     numberReferencePoints = 0;
+    ui.actionSaveWorldFile->setEnabled(false);
   }
 }
 
@@ -68,6 +71,30 @@ void GUI::MainBoard::on_actionNormalSize_triggered () {
   scaleFactor = 1.0;
   ui.actionZoomIn->setEnabled(true);
   ui.actionZoomOut->setEnabled(true);
+}
+
+/* -- Save world file associated to opened image. ------------------------- */
+void GUI::MainBoard::on_actionSaveWorldFile_triggered () {
+  /* Information about the image file. */
+  const QFileInfo imageFile (fileName);
+  /* Name of the world file. */
+  const QString worldFileName =
+    imageFile.canonicalPath() + QDir::separator() + imageFile.baseName()
+    + ".jgw";
+  /* World file itself. */
+  QFile worldFile (worldFileName);
+  worldFile.open(QIODevice::WriteOnly | QIODevice::Text);
+  /* Stream on the world file. */
+  QTextStream worldFileStream (&worldFile);
+
+  worldFileStream << change(0, 0) << '\n'
+                  << change(1, 0) << '\n'
+                  << change(0, 1) << '\n'
+                  << change(1, 1) << "\n\n"
+                  << change(0, 2) << '\n'
+                  << change(1, 2) << '\n';
+
+  worldFile.close();
 }
 
 /* -- When mouse is left-clicked. ----------------------------------------- */
@@ -94,14 +121,19 @@ void GUI::MainBoard::mousePressEvent (QMouseEvent* event) {
 
     if (numberReferencePoints == 3) {
       change = computeCoefficients(r1, r2).transpose();
+      ui.actionSaveWorldFile->setEnabled(true);
     }
   }
   else {
+    /* Degree character. */
+    const QChar degree = 0x00B0;
+    /* Vector for referential change. */
     const Eigen::Vector3d x (pos.x(), pos.y(), 1.);
+    /* Coordinates in geographical referential. */
     const Eigen::Vector2d b = change * x;
     /* Message to be outputted. */
-    const QString message = QString::number(b(0)) + tr("° E, ")
-      + QString::number(b(1)) + tr("° N");
+    const QString message = QString::number(b(0)) + degree + tr(" E, ")
+      + QString::number(b(1)) + degree + tr(" N");
     QMessageBox::information(this, tr("Coordinates"), message);
   }
 }
