@@ -13,6 +13,7 @@
  * \date 2013/06/25
  * \date 2013/06/26
  * \date 2013/06/27
+ * \date 2013/06/28
  */
 
 #include <boost/concept_check.hpp>
@@ -40,8 +41,7 @@ namespace GUI {
 
     public:
       /// \brief Default constructor.
-      explicit MainBoard (): QMainWindow (), r1 (3), r2 (3),
-          numberReferencePoints (0) {
+      explicit MainBoard (): QMainWindow (), r1 (3), r2 (3) {
         ui.setupUi(this);
 
         imageLabel = new QLabel;

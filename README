@@ -3,8 +3,10 @@ GeoDesk is a tool to get geographical data from digitalised maps.
   To compile it, you need a C++-2011 compiler and CMake
 (<http://www.cmake.org/>) version 2.6 or greater. It depends on library Boost
 (<http://www.boost.org/>) version 1.31.1 or greater, library Qt4
-(<http://qt-project.org/>) version 4.6 or greater, and Doxygen
-(<http://www.stack.nl/~dimitri/doxygen/>) to generate the documentation.
+(<http://qt-project.org/>) version 4.6 or greater, library Eigen
+(<http://eigen.tuxfamily.org/index.php?title=Main_Page>) version 3.0.0 or
+greater, and Doxygen (<http://www.stack.nl/~dimitri/doxygen/>) to generate the
+documentation.
 
   Compile GeoDesk is pretty straightforward. We recommend you create a directory
 called "build" in GeoDesk directory. Then go to this directory and simply use

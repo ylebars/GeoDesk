@@ -9,6 +9,7 @@
  * \date 2013/06/25
  * \date 2013/06/26
  * \date 2013/06/27
+ * \date 2013/06/28
  */
 
 #include <QFileDialog>
@@ -19,7 +20,9 @@
 #include <QMessageBox>
 #include <cstddef>
 #include <algorithm>
-#include <iostream>
+#include <QInputDialog>
+#include <QMessageBox>
+#include <sstream>
 
 #include "mainboard.hpp"
 
@@ -44,6 +47,8 @@ void GUI::MainBoard::on_actionOpen_triggered () {
     ui.actionZoomIn->setEnabled(true);
     ui.actionZoomOut->setEnabled(true);
     ui.actionNormalSize->setEnabled(true);
+
+    numberReferencePoints = 0;
   }
 }
 
@@ -76,16 +81,16 @@ void GUI::MainBoard::mousePressEvent (QMouseEvent* event) {
 
   if (numberReferencePoints < r1.size()) {
     r1[numberReferencePoints] = pos;
-    std::cout << "Latitude: ";
-    /* New latitude. */
-    double x;
-    std::cin >> x;
-    r2[numberReferencePoints].x() = x;
-    std::cout << "Longitude: ";
-    /* New longitude. */
-    double y;
-    std::cin >> y;
-    r2[numberReferencePoints++].y() = y;
+    /* Did the user push "OK" button? */
+    bool ok;
+    r2[numberReferencePoints].x() =
+      QInputDialog::getDouble(this, tr("Longitude"),
+                              tr("Longitude in decimal degrees east"),
+                              0., -180., 180., 2, &ok);
+    r2[numberReferencePoints++].y() =
+      QInputDialog::getDouble(this, tr("Latitude"),
+                              tr("Latitude in decimal degrees north"),
+                              0., -90., 90., 2, &ok);
 
     if (numberReferencePoints == 3) {
       change = computeCoefficients(r1, r2).transpose();
@@ -94,6 +99,9 @@ void GUI::MainBoard::mousePressEvent (QMouseEvent* event) {
   else {
     const Eigen::Vector3d x (pos.x(), pos.y(), 1.);
     const Eigen::Vector2d b = change * x;
-    std::cout << "Coordinates: " << b << '\n';
+    /* Message to be outputted. */
+    const QString message = QString::number(b(0)) + tr("° E, ")
+      + QString::number(b(1)) + tr("° N");
+    QMessageBox::information(this, tr("Coordinates"), message);
   }
 }
