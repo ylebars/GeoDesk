@@ -10,6 +10,7 @@
  * \date 2013/06/26
  * \date 2013/06/27
  * \date 2013/06/28
+ * \date 2013/07/01
  */
 
 #include <QFileDialog>
@@ -25,6 +26,7 @@
 #include <QDir>
 #include <QFile>
 #include <QTextStream>
+#include <QMessageBox>
 
 #include "mainboard.hpp"
 
@@ -50,7 +52,37 @@ void GUI::MainBoard::on_actionOpen_triggered () {
     ui.actionZoomOut->setEnabled(true);
     ui.actionNormalSize->setEnabled(true);
 
-    numberReferencePoints = 0;
+    /* Information about the image file. */
+    const QFileInfo imageFile (fileName);
+    /* Extension of the image file. */
+    const QString imageExtension = imageFile.suffix();
+    /* Extension for the world file. */
+    const QString worldExtension = '.' + imageExtension.at(0)
+      + imageExtension.at(imageExtension.size() - 1) + 'w';
+    /* Name of the world file. */
+    worldFileName =
+      imageFile.canonicalPath() + QDir::separator()
+      + imageFile.completeBaseName() + worldExtension;
+    if (QFile::exists(worldFileName)) {
+      worldExists = true;
+      /* The world file itself. */
+      QFile worldFile (worldFileName);
+      if (worldFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        /* Stream on the file. */
+        QTextStream worldFileStream (&worldFile);
+        worldFileStream >> change(0, 0) >> change(1, 0) >> change(0, 1)
+                        >> change(1, 1) >> change(0, 2) >> change(1, 2);
+        numberReferencePoints = 3;
+      }
+      else {
+        QMessageBox::critical(this, "Error", "World file cannot be opened.");
+      }
+    }
+    else {
+      worldExists = false;
+      numberReferencePoints = 0;
+    }
+
     ui.actionSaveWorldFile->setEnabled(false);
   }
 }
@@ -75,15 +107,19 @@ void GUI::MainBoard::on_actionNormalSize_triggered () {
 
 /* -- Save world file associated to opened image. ------------------------- */
 void GUI::MainBoard::on_actionSaveWorldFile_triggered () {
-  /* Information about the image file. */
-  const QFileInfo imageFile (fileName);
-  /* Name of the world file. */
-  const QString worldFileName =
-    imageFile.canonicalPath() + QDir::separator() + imageFile.baseName()
-    + ".jgw";
+  if (worldExists) {
+    /* User's decision whether or not overwrite world file. */
+    const int choice =
+      QMessageBox::question(this, "Overwrite",
+                            "World file already exists, overwrite it?",
+                            QMessageBox::Yes | QMessageBox::No);
+    if (choice == QMessageBox::No) return;
+  }
+
   /* World file itself. */
   QFile worldFile (worldFileName);
-  worldFile.open(QIODevice::WriteOnly | QIODevice::Text);
+  worldFile.open(QIODevice::WriteOnly | QIODevice::Text
+                 | QIODevice::Truncate);
   /* Stream on the world file. */
   QTextStream worldFileStream (&worldFile);
 

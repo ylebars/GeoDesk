@@ -4,6 +4,7 @@
  * \author Le Bars, Yoann
  * \version 1.0
  * \date 2013/06/19
+ * \date 2013/07/01
  */
 
 /**
@@ -27,6 +28,10 @@
 #include <boost/program_options.hpp>
 #include <iostream>
 #include <QApplication>
+#include <QTranslator>
+#include <QLocale>
+#include <QLibraryInfo>
+#include <QString>
 
 #include "mainboard.hpp"
 
@@ -38,6 +43,16 @@
  */
 int cpp_main (int argc, char** argv) {
   namespace po = boost::program_options;
+
+  /* Initialisation of Qt. */
+  const QApplication app (argc, argv);
+
+  /* System locale. */
+  const QString locale = QLocale::system().name().section('_', 0, 0);
+  QTranslator translator;
+  translator.load(QString("qt_") + locale,
+                  QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+  app.installTranslator(&translator);
 
   /* -- Reading the command line. -- */
 
@@ -79,9 +94,6 @@ int cpp_main (int argc, char** argv) {
   }
 
   if (stop) return 0;
-
-  /* Initialisation of Qt. */
-  const QApplication app (argc, argv);
 
   /* Main board of the program. */
   GUI::MainBoard mainBoard;

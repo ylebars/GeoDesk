@@ -14,6 +14,7 @@
  * \date 2013/06/26
  * \date 2013/06/27
  * \date 2013/06/28
+ * \date 2013/07/01
  */
 
 #include <boost/concept_check.hpp>
@@ -108,6 +109,9 @@ namespace GUI {
       /// \brief Name of the file to be opened.
       QString fileName;
 
+      /// \brief Name of the world file associated to the image.
+      QString worldFileName;
+
       /// \brief Label for image manipulation.
       QLabel* imageLabel;
 
@@ -119,6 +123,9 @@ namespace GUI {
 
       /// \brief Number of given reference point .
       size_t numberReferencePoints;
+
+      /// \brief Whether or not the world file exists.
+      bool worldExists;
 
       /**
        * \brief Set scroll bar if needed.
