@@ -37,6 +37,7 @@
 namespace GUI {
   using namespace Projection;
 
+  /// \brief Class for program main window.
   class MainBoard: public QMainWindow {
       Q_OBJECT
 
