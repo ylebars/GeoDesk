@@ -76,6 +76,8 @@ void GUI::MainBoard::on_actionOpen_triggered () {
       }
       else {
         QMessageBox::critical(this, "Error", "World file cannot be opened.");
+        worldExists = false;
+        numberReferencePoints = 0;
       }
     }
     else {
@@ -170,6 +172,11 @@ void GUI::MainBoard::mousePressEvent (QMouseEvent* event) {
     /* Message to be outputted. */
     const QString message = QString::number(b(0)) + degree + tr(" E, ")
       + QString::number(b(1)) + degree + tr(" N");
-    QMessageBox::information(this, tr("Coordinates"), message);
+    /* Did the user push "OK" button? */
+    bool ok;
+    /* Value associated to the clicked localisation. */
+    const double value = QInputDialog::getDouble(this, tr("Enter value"),
+                                                 message, 0., 0., 15000., 2,
+                                                 &ok);
   }
 }
