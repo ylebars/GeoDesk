@@ -95,6 +95,8 @@ int cpp_main (int argc, char** argv) {
 
   if (stop) return 0;
 
+  /* -- Launch main window. -- */
+
   /* Main board of the program. */
   GUI::MainBoard mainBoard;
   mainBoard.show();

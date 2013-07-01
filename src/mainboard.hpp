@@ -86,6 +86,11 @@ namespace GUI {
        */
       void on_actionSaveWorldFile_triggered ();
 
+      /**
+       * \brief Save data which have been set by user.
+       */
+      void on_actionSaveDataFile_triggered ();
+
     protected:
       /**
        * \brief What to do when mouse is clicked.
@@ -111,6 +116,9 @@ namespace GUI {
 
       /// \brief Name of the world file associated to the image.
       QString worldFileName;
+
+      /// \brief Data to be stored.
+      QString data;
 
       /// \brief Label for image manipulation.
       QLabel* imageLabel;

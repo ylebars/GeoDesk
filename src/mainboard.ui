@@ -31,6 +31,7 @@
     </property>
     <addaction name="actionOpen"/>
     <addaction name="actionSaveWorldFile"/>
+    <addaction name="actionSaveDataFile"/>
     <addaction name="separator"/>
     <addaction name="actionQuit"/>
    </widget>
@@ -97,6 +98,14 @@
   <action name="actionSaveWorldFile">
    <property name="text">
     <string>Save world file</string>
+   </property>
+  </action>
+  <action name="actionSaveDataFile">
+   <property name="text">
+    <string>&amp;Save data file</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
    </property>
   </action>
  </widget>

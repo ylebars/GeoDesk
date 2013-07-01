@@ -33,7 +33,8 @@
 /* -- Open an image. ------------------------------------------------------ */
 void GUI::MainBoard::on_actionOpen_triggered () {
   fileName = QFileDialog::getOpenFileName(this, tr("Open file"),
-                                          QDir::currentPath());
+                                          QDir::currentPath(),
+tr("Images (*.bmp *.gif *.jpg *.jpeg *.png *.pbm *.pgm *.ppm *.tiff *.xbm *.xpm);;All files (*)"));
 
   if (!fileName.isEmpty()) {
     const QImage image (fileName);
@@ -86,6 +87,7 @@ void GUI::MainBoard::on_actionOpen_triggered () {
     }
 
     ui.actionSaveWorldFile->setEnabled(false);
+    data = "";
   }
 }
 
@@ -112,8 +114,8 @@ void GUI::MainBoard::on_actionSaveWorldFile_triggered () {
   if (worldExists) {
     /* User's decision whether or not overwrite world file. */
     const int choice =
-      QMessageBox::question(this, "Overwrite",
-                            "World file already exists, overwrite it?",
+      QMessageBox::question(this, tr("Overwrite"),
+                            tr("World file already exists, overwrite it?"),
                             QMessageBox::Yes | QMessageBox::No);
     if (choice == QMessageBox::No) return;
   }
@@ -133,6 +135,25 @@ void GUI::MainBoard::on_actionSaveWorldFile_triggered () {
                   << change(1, 2) << '\n';
 
   worldFile.close();
+}
+
+/* -- Save data which have been set by the user. -------------------------- */
+void GUI::MainBoard::on_actionSaveDataFile_triggered () {
+  /* Name of the file to contain data. */
+  const QString dataFileName =
+    QFileDialog::getSaveFileName(this, tr("Save data file"),
+                                 QDir::currentPath(),
+                                 tr("Text files (*.txt);;All files (*)"));
+  if (!dataFileName.isEmpty()) {
+    /* Data file itself. */
+    QFile dataFile (dataFileName);
+    dataFile.open(QIODevice::WriteOnly | QIODevice::Text
+                  | QIODevice::Truncate);
+    /* Stream on the data file. */
+    QTextStream dataFileStream (&dataFile);
+    dataFileStream << data;
+    dataFile.close();
+  }
 }
 
 /* -- When mouse is left-clicked. ----------------------------------------- */
@@ -178,5 +199,9 @@ void GUI::MainBoard::mousePressEvent (QMouseEvent* event) {
     const double value = QInputDialog::getDouble(this, tr("Enter value"),
                                                  message, 0., 0., 15000., 2,
                                                  &ok);
+    /* Stream on the QString which contains data. */
+    QTextStream dataStream (&data);
+    dataStream << pos.x() << ' ' << pos.y() << ' ' << b(0) << ' ' << b(1)
+               << ' ' << value << '\n';
   }
 }
