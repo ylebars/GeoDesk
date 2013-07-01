@@ -37,7 +37,7 @@ QT4_WRAP_CPP(QT_HEADERS_MOC ${QT_HEADER_FILES})
 
 set (
   QT_FORM_FILES
-  ${PROJECT_SOURCE_DIR}/ressources/mainboard.ui
+  mainboard.ui
 )
 QT4_WRAP_UI(QT_FORM_HEADERS ${QT_FORM_FILES})
 
