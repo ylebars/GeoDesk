@@ -43,7 +43,14 @@
     <addaction name="actionZoomOut"/>
     <addaction name="actionNormalSize"/>
    </widget>
+   <widget class="QMenu" name="menu_Edit">
+    <property name="title">
+     <string>&amp;Edit</string>
+    </property>
+    <addaction name="actionGeoreferenceImage"/>
+   </widget>
    <addaction name="menuFile"/>
+   <addaction name="menu_Edit"/>
    <addaction name="menu_View"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
@@ -106,6 +113,11 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="actionGeoreferenceImage">
+   <property name="text">
+    <string>Geo-reference image</string>
    </property>
   </action>
  </widget>

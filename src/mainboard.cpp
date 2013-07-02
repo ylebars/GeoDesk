@@ -11,6 +11,7 @@
  * \date 2013/06/27
  * \date 2013/06/28
  * \date 2013/07/01
+ * \date 2013/07/02
  */
 
 #include <QFileDialog>
@@ -64,8 +65,8 @@ tr("Images (*.bmp *.gif *.jpg *.jpeg *.png *.pbm *.pgm *.ppm *.tiff *.xbm *.xpm)
     worldFileName =
       imageFile.canonicalPath() + QDir::separator()
       + imageFile.completeBaseName() + worldExtension;
+    worldExists = false;
     if (QFile::exists(worldFileName)) {
-      worldExists = true;
       /* The world file itself. */
       QFile worldFile (worldFileName);
       if (worldFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
@@ -73,21 +74,16 @@ tr("Images (*.bmp *.gif *.jpg *.jpeg *.png *.pbm *.pgm *.ppm *.tiff *.xbm *.xpm)
         QTextStream worldFileStream (&worldFile);
         worldFileStream >> change(0, 0) >> change(1, 0) >> change(0, 1)
                         >> change(1, 1) >> change(0, 2) >> change(1, 2);
-        numberReferencePoints = 3;
+        worldExists = true;
       }
       else {
         QMessageBox::critical(this, "Error", "World file cannot be opened.");
-        worldExists = false;
-        numberReferencePoints = 0;
       }
-    }
-    else {
-      worldExists = false;
-      numberReferencePoints = 0;
     }
 
     ui.actionSaveWorldFile->setEnabled(false);
     data = "";
+    referencing = false;
   }
 }
 
@@ -111,7 +107,7 @@ void GUI::MainBoard::on_actionNormalSize_triggered () {
 
 /* -- Save world file associated to opened image. ------------------------- */
 void GUI::MainBoard::on_actionSaveWorldFile_triggered () {
-  if (worldExists) {
+  if (QFile::exists(worldFileName)) {
     /* User's decision whether or not overwrite world file. */
     const int choice =
       QMessageBox::question(this, tr("Overwrite"),
@@ -135,6 +131,8 @@ void GUI::MainBoard::on_actionSaveWorldFile_triggered () {
                   << change(1, 2) << '\n';
 
   worldFile.close();
+
+  ui.actionSaveWorldFile->setEnabled(false);
 }
 
 /* -- Save data which have been set by the user. -------------------------- */
@@ -156,6 +154,15 @@ void GUI::MainBoard::on_actionSaveDataFile_triggered () {
   }
 }
 
+/* -- Give reference point for image geo-reference. ----------------------- */
+void GUI::MainBoard::on_actionGeoreferenceImage_triggered () {
+  worldExists = false;
+  referencing = true;
+  numberReferencePoints = 0;
+
+  status->setText(tr("Referencing: point 1 / %1").arg(requiredReference));
+}
+
 /* -- When mouse is left-clicked. ----------------------------------------- */
 void GUI::MainBoard::mousePressEvent (QMouseEvent* event) {
   QWidget::mousePressEvent(event);
@@ -165,7 +172,13 @@ void GUI::MainBoard::mousePressEvent (QMouseEvent* event) {
   /* Coordinate of the point being clicked. */
   const Point2D pos = getMousePosition(event->pos());
 
-  if (numberReferencePoints < r1.size()) {
+  if (referencing) {
+    /* Reference points in image coordinates. */
+    static std::vector<Point2D> r1 (requiredReference);
+
+    /* \brief Reference points in geographical coordinates. */
+    static std::vector<Point2D> r2 (requiredReference);
+
     r1[numberReferencePoints] = pos;
     /* Did the user push "OK" button? */
     bool ok;
@@ -173,17 +186,24 @@ void GUI::MainBoard::mousePressEvent (QMouseEvent* event) {
       QInputDialog::getDouble(this, tr("Longitude"),
                               tr("Longitude in decimal degrees east"),
                               0., -180., 180., 2, &ok);
-    r2[numberReferencePoints++].y() =
+    if (!ok) return;
+    r2[numberReferencePoints].y() =
       QInputDialog::getDouble(this, tr("Latitude"),
                               tr("Latitude in decimal degrees north"),
                               0., -90., 90., 2, &ok);
+    if (ok) ++numberReferencePoints;
+    status->setText(tr("Referencing: point %1 / %2").arg(numberReferencePoints
+                                                 + 1).arg(requiredReference));
 
-    if (numberReferencePoints == 3) {
+    if (numberReferencePoints == requiredReference) {
       change = computeCoefficients(r1, r2).transpose();
       ui.actionSaveWorldFile->setEnabled(true);
+      worldExists = true;
+      referencing = false;
+      status->setText("");
     }
   }
-  else {
+  else if (worldExists) {
     /* Degree character. */
     const QChar degree = 0x00B0;
     /* Vector for referential change. */

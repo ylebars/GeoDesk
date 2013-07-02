@@ -15,6 +15,7 @@
  * \date 2013/06/27
  * \date 2013/06/28
  * \date 2013/07/01
+ * \date 2013/07/02
  */
 
 #include <boost/concept_check.hpp>
@@ -43,8 +44,12 @@ namespace GUI {
 
     public:
       /// \brief Default constructor.
-      explicit MainBoard (): QMainWindow (), r1 (3), r2 (3) {
+      explicit MainBoard (): QMainWindow () {
         ui.setupUi(this);
+
+        status = new QLabel;
+
+        ui.statusbar->addWidget(status);
 
         imageLabel = new QLabel;
         imageLabel->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
@@ -62,6 +67,7 @@ namespace GUI {
 
       /// \brief Destructor.
       virtual ~MainBoard () {
+        delete status;
         delete imageLabel;
         delete scrollArea;
       }
@@ -87,10 +93,11 @@ namespace GUI {
        */
       void on_actionSaveWorldFile_triggered ();
 
-      /**
-       * \brief Save data which have been set by user.
-       */
+      /// \brief Save data which have been set by user.
       void on_actionSaveDataFile_triggered ();
+
+      /// \brief Give reference points for image geo-reference.
+      void on_actionGeoreferenceImage_triggered ();
 
     protected:
       /**
@@ -100,17 +107,14 @@ namespace GUI {
       virtual void mousePressEvent (QMouseEvent *event);
 
     private:
+      /// \brief Number of reference points required.
+      const size_t requiredReference = 3;
+
       /// \brief Matrix to compute referential change.
       Eigen::Matrix<double, 2, 3> change;
 
       /// \brief Image scale factor.
       double scaleFactor;
-
-      /// \brief Reference points in image coordinates.
-      std::vector<Point2D> r1;
-
-      /// \brief Reference points in geographical coordinates.
-      std::vector<Point2D> r2;
 
       /// \brief Name of the file to be opened.
       QString fileName;
@@ -120,6 +124,9 @@ namespace GUI {
 
       /// \brief Data to be stored.
       QString data;
+
+      /// \brief Label to inform user on current status of the program.
+      QLabel* status;
 
       /// \brief Label for image manipulation.
       QLabel* imageLabel;
@@ -135,6 +142,9 @@ namespace GUI {
 
       /// \brief Whether or not the world file exists.
       bool worldExists;
+
+      /// \brief Whether or not being referencing image.
+      bool referencing;
 
       /**
        * \brief Set scroll bar if needed.
