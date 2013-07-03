@@ -30,6 +30,8 @@
      <string>&amp;File</string>
     </property>
     <addaction name="actionOpen"/>
+    <addaction name="actionLoadWorldFile"/>
+    <addaction name="separator"/>
     <addaction name="actionSaveWorldFile"/>
     <addaction name="actionSaveDataFile"/>
     <addaction name="separator"/>
@@ -56,7 +58,7 @@
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionOpen">
    <property name="text">
-    <string>&amp;Open</string>
+    <string>&amp;Open image</string>
    </property>
    <property name="toolTip">
     <string>Open an image</string>
@@ -118,6 +120,11 @@
   <action name="actionGeoreferenceImage">
    <property name="text">
     <string>Geo-reference image</string>
+   </property>
+  </action>
+  <action name="actionLoadWorldFile">
+   <property name="text">
+    <string>&amp;Load world file</string>
    </property>
   </action>
  </widget>

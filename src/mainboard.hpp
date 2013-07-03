@@ -16,6 +16,7 @@
  * \date 2013/06/28
  * \date 2013/07/01
  * \date 2013/07/02
+ * \date 2013/07/03
  */
 
 #include <boost/concept_check.hpp>
@@ -47,10 +48,6 @@ namespace GUI {
       explicit MainBoard (): QMainWindow () {
         ui.setupUi(this);
 
-        status = new QLabel;
-
-        ui.statusbar->addWidget(status);
-
         imageLabel = new QLabel;
         imageLabel->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
         imageLabel->setScaledContents(true);
@@ -67,7 +64,6 @@ namespace GUI {
 
       /// \brief Destructor.
       virtual ~MainBoard () {
-        delete status;
         delete imageLabel;
         delete scrollArea;
       }
@@ -75,6 +71,9 @@ namespace GUI {
     protected slots:
       /// \brief Get the name of the file to be opened.
       void on_actionOpen_triggered ();
+
+      /// \brief Load a world file.
+      void on_actionLoadWorldFile_triggered ();
 
       /// \brief Zooms in an image.
       void on_actionZoomIn_triggered ();
@@ -107,6 +106,15 @@ namespace GUI {
       virtual void mousePressEvent (QMouseEvent *event);
 
     private:
+      /// \brief String indicating operation complete.
+      const QString done = tr("Done.");
+
+      /// \brief String indicating geo-referencing is enable.
+      const QString geoOk = tr("Image with geo-reference.");
+
+      /// \brief String indicating geo-referencing is disable.
+      const QString geoNotOk = tr("Image without geo-reference.");
+
       /// \brief Number of reference points required.
       const size_t requiredReference = 3;
 
@@ -116,17 +124,11 @@ namespace GUI {
       /// \brief Image scale factor.
       double scaleFactor;
 
-      /// \brief Name of the file to be opened.
-      QString fileName;
-
       /// \brief Name of the world file associated to the image.
       QString worldFileName;
 
       /// \brief Data to be stored.
       QString data;
-
-      /// \brief Label to inform user on current status of the program.
-      QLabel* status;
 
       /// \brief Label for image manipulation.
       QLabel* imageLabel;
@@ -145,6 +147,28 @@ namespace GUI {
 
       /// \brief Whether or not being referencing image.
       bool referencing;
+
+      /**
+       * \brief Actually load world file.
+       * \param fileName Name of the world file.
+       */
+      void loadWorldFile (const QString &fileName) {
+        /* The world file itself. */
+        QFile worldFile (worldFileName);
+        if (worldFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+          /* Stream on the file. */
+          QTextStream worldFileStream (&worldFile);
+          worldFileStream >> change(0, 0) >> change(1, 0) >> change(0, 1)
+                          >> change(1, 1) >> change(0, 2) >> change(1, 2);
+          worldExists = true;
+          ui.statusbar->showMessage(geoOk);
+          ui.actionSaveWorldFile->setEnabled(false);
+        }
+        else {
+          QMessageBox::critical(this, tr("Error"),
+                                tr("World file cannot be opened."));
+        }
+      }
 
       /**
        * \brief Set scroll bar if needed.

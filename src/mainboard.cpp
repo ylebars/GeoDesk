@@ -12,10 +12,10 @@
  * \date 2013/06/28
  * \date 2013/07/01
  * \date 2013/07/02
+ * \date 2013/07/03
  */
 
 #include <QFileDialog>
-#include <QLabel>
 #include <QPixmap>
 #include <QImage>
 #include <QMessageBox>
@@ -33,9 +33,15 @@
 
 /* -- Open an image. ------------------------------------------------------ */
 void GUI::MainBoard::on_actionOpen_triggered () {
-  fileName = QFileDialog::getOpenFileName(this, tr("Open file"),
-                                          QDir::currentPath(),
-tr("Images (*.bmp *.gif *.jpg *.jpeg *.png *.pbm *.pgm *.ppm *.tiff *.xbm *.xpm);;All files (*)"));
+  ui.statusbar->showMessage(tr("Opening image."));
+
+  /* Name of the file to be opened. */
+  const QString fileName = QFileDialog::getOpenFileName(this, tr("Open file"),
+                                                        QDir::currentPath(),
+                                          tr("Standard images (*.bmp *.gif "
+                                             "*.jpg *.jpeg *.png *.pbm *.pgm "
+                                             "*.ppm *.tiff *.xbm *.xpm);;"
+                                             "All files (*)"));
 
   if (!fileName.isEmpty()) {
     const QImage image (fileName);
@@ -66,47 +72,68 @@ tr("Images (*.bmp *.gif *.jpg *.jpeg *.png *.pbm *.pgm *.ppm *.tiff *.xbm *.xpm)
       imageFile.canonicalPath() + QDir::separator()
       + imageFile.completeBaseName() + worldExtension;
     worldExists = false;
+    ui.statusbar->showMessage(geoNotOk);
     if (QFile::exists(worldFileName)) {
-      /* The world file itself. */
-      QFile worldFile (worldFileName);
-      if (worldFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        /* Stream on the file. */
-        QTextStream worldFileStream (&worldFile);
-        worldFileStream >> change(0, 0) >> change(1, 0) >> change(0, 1)
-                        >> change(1, 1) >> change(0, 2) >> change(1, 2);
-        worldExists = true;
-      }
-      else {
-        QMessageBox::critical(this, "Error", "World file cannot be opened.");
-      }
+      loadWorldFile(worldFileName);
     }
 
     ui.actionSaveWorldFile->setEnabled(false);
     data = "";
     referencing = false;
   }
+  else {
+    ui.statusbar->showMessage(tr("No file to be opened."));
+  }
+}
+
+/* -- Load a world file. -------------------------------------------------- */
+void GUI::MainBoard::on_actionLoadWorldFile_triggered () {
+  ui.statusbar->showMessage(tr("Loading world file."));
+
+  /* Name of the file to be opened. */
+  const QString fileName = QFileDialog::getOpenFileName(this, tr("Open file"),
+                                                        QDir::currentPath(),
+                                          tr("World files (*.bpw *.gfw "
+                                             "*.jgw *.pgw *.pmw "
+                                             "*.tfw *.twfx *.xmw);;"
+                                             "All files (*)"));
+
+  if (!fileName.isEmpty()) {
+    loadWorldFile(fileName);
+  }
+  else {
+    ui.statusbar->showMessage(tr("No file to be opened."));
+  }
 }
 
 /* -- Zoom into image. ---------------------------------------------------- */
 void GUI::MainBoard::on_actionZoomIn_triggered () {
+  ui.statusbar->showMessage(tr("Zooming in."));
   scaleImage(1.25);
+  ui.statusbar->showMessage(done);
 }
 
 /* -- Zoom out an image. -------------------------------------------------- */
 void GUI::MainBoard::on_actionZoomOut_triggered () {
+  ui.statusbar->showMessage(tr("Zooming out."));
   scaleImage(0.8);
+  ui.statusbar->showMessage(done);
 }
 
 /* -- Set image to its normal size. --------------------------------------- */
 void GUI::MainBoard::on_actionNormalSize_triggered () {
+  ui.statusbar->showMessage(tr("Back to normal size."));
   imageLabel->adjustSize();
   scaleFactor = 1.0;
   ui.actionZoomIn->setEnabled(true);
   ui.actionZoomOut->setEnabled(true);
+  ui.statusbar->showMessage(done);
 }
 
 /* -- Save world file associated to opened image. ------------------------- */
 void GUI::MainBoard::on_actionSaveWorldFile_triggered () {
+  ui.statusbar->showMessage(tr("Saving world file."));
+
   if (QFile::exists(worldFileName)) {
     /* User's decision whether or not overwrite world file. */
     const int choice =
@@ -133,10 +160,14 @@ void GUI::MainBoard::on_actionSaveWorldFile_triggered () {
   worldFile.close();
 
   ui.actionSaveWorldFile->setEnabled(false);
+
+  ui.statusbar->showMessage(tr("Saved world file: %1").arg(worldFileName));
 }
 
 /* -- Save data which have been set by the user. -------------------------- */
 void GUI::MainBoard::on_actionSaveDataFile_triggered () {
+  ui.statusbar->showMessage(tr("Saving data file."));
+
   /* Name of the file to contain data. */
   const QString dataFileName =
     QFileDialog::getSaveFileName(this, tr("Save data file"),
@@ -152,15 +183,18 @@ void GUI::MainBoard::on_actionSaveDataFile_triggered () {
     dataFileStream << data;
     dataFile.close();
   }
+
+  ui.statusbar->showMessage(done);
 }
 
 /* -- Give reference point for image geo-reference. ----------------------- */
 void GUI::MainBoard::on_actionGeoreferenceImage_triggered () {
+  ui.statusbar->showMessage(
+    tr("Referencing: point 1 / %1").arg(requiredReference));
+
   worldExists = false;
   referencing = true;
   numberReferencePoints = 0;
-
-  status->setText(tr("Referencing: point 1 / %1").arg(requiredReference));
 }
 
 /* -- When mouse is left-clicked. ----------------------------------------- */
@@ -192,15 +226,16 @@ void GUI::MainBoard::mousePressEvent (QMouseEvent* event) {
                               tr("Latitude in decimal degrees north"),
                               0., -90., 90., 2, &ok);
     if (ok) ++numberReferencePoints;
-    status->setText(tr("Referencing: point %1 / %2").arg(numberReferencePoints
-                                                 + 1).arg(requiredReference));
+    ui.statusbar->showMessage(
+      tr("Referencing: point %1 / %2").arg(numberReferencePoints
+                                           + 1).arg(requiredReference));
 
     if (numberReferencePoints == requiredReference) {
       change = computeCoefficients(r1, r2).transpose();
       ui.actionSaveWorldFile->setEnabled(true);
       worldExists = true;
       referencing = false;
-      status->setText("");
+      ui.statusbar->showMessage(geoOk);
     }
   }
   else if (worldExists) {
