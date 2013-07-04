@@ -13,6 +13,7 @@
  * \date 2013/07/01
  * \date 2013/07/02
  * \date 2013/07/03
+ * \date 2013/07/04
  */
 
 #include <QFileDialog>
@@ -59,6 +60,7 @@ void GUI::MainBoard::on_actionOpen_triggered () {
     ui.actionZoomIn->setEnabled(true);
     ui.actionZoomOut->setEnabled(true);
     ui.actionNormalSize->setEnabled(true);
+    ui.actionSetData->setEnabled(false);
 
     /* Information about the image file. */
     const QFileInfo imageFile (fileName);
@@ -80,6 +82,8 @@ void GUI::MainBoard::on_actionOpen_triggered () {
     ui.actionSaveWorldFile->setEnabled(false);
     data = "";
     referencing = false;
+    setting = false;
+    ui.actionGeoreferenceImage->setEnabled(true);
   }
   else {
     ui.statusbar->showMessage(tr("No file to be opened."));
@@ -100,6 +104,7 @@ void GUI::MainBoard::on_actionLoadWorldFile_triggered () {
 
   if (!fileName.isEmpty()) {
     loadWorldFile(fileName);
+    setting = false;
   }
   else {
     ui.statusbar->showMessage(tr("No file to be opened."));
@@ -162,6 +167,7 @@ void GUI::MainBoard::on_actionSaveWorldFile_triggered () {
   ui.actionSaveWorldFile->setEnabled(false);
 
   ui.statusbar->showMessage(tr("Saved world file: %1").arg(worldFileName));
+  setting = false;
 }
 
 /* -- Save data which have been set by the user. -------------------------- */
@@ -194,7 +200,14 @@ void GUI::MainBoard::on_actionGeoreferenceImage_triggered () {
 
   worldExists = false;
   referencing = true;
+  setting = false;
   numberReferencePoints = 0;
+}
+
+/* -- Enable setting geo-referenced data. --------------------------------- */
+void GUI::MainBoard::on_actionSetData_triggered () {
+  setting = true;
+  ui.statusbar->showMessage(tr("Setting geo-referenced data."));
 }
 
 /* -- When mouse is left-clicked. ----------------------------------------- */
@@ -233,12 +246,13 @@ void GUI::MainBoard::mousePressEvent (QMouseEvent* event) {
     if (numberReferencePoints == requiredReference) {
       change = computeCoefficients(r1, r2).transpose();
       ui.actionSaveWorldFile->setEnabled(true);
+      ui.actionSetData->setEnabled(true);
       worldExists = true;
       referencing = false;
       ui.statusbar->showMessage(geoOk);
     }
   }
-  else if (worldExists) {
+  else if (setting) {
     /* Degree character. */
     const QChar degree = 0x00B0;
     /* Vector for referential change. */
@@ -254,9 +268,11 @@ void GUI::MainBoard::mousePressEvent (QMouseEvent* event) {
     const double value = QInputDialog::getDouble(this, tr("Enter value"),
                                                  message, 0., 0., 15000., 2,
                                                  &ok);
-    /* Stream on the QString which contains data. */
-    QTextStream dataStream (&data);
-    dataStream << pos.x() << ' ' << pos.y() << ' ' << b(0) << ' ' << b(1)
-               << ' ' << value << '\n';
+    if (ok) {
+      /* Stream on the QString which contains data. */
+      QTextStream dataStream (&data);
+      dataStream << pos.x() << ' ' << pos.y() << ' ' << b(0) << ' ' << b(1)
+                 << ' ' << value << '\n';
+    }
   }
 }

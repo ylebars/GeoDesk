@@ -17,6 +17,7 @@
  * \date 2013/07/01
  * \date 2013/07/02
  * \date 2013/07/03
+ * \date 2013/07/04
  */
 
 #include <boost/concept_check.hpp>
@@ -56,6 +57,8 @@ namespace GUI {
         scrollArea->setWidget(imageLabel);
         setCentralWidget(scrollArea);
 
+        ui.actionGeoreferenceImage->setEnabled(false);
+        ui.actionSetData->setEnabled(false);
         ui.actionZoomIn->setEnabled(false);
         ui.actionZoomOut->setEnabled(false);
         ui.actionNormalSize->setEnabled(false);
@@ -97,6 +100,9 @@ namespace GUI {
 
       /// \brief Give reference points for image geo-reference.
       void on_actionGeoreferenceImage_triggered ();
+
+      /// \brief Enable setting of geo-referenced data.
+      void on_actionSetData_triggered ();
 
     protected:
       /**
@@ -148,6 +154,9 @@ namespace GUI {
       /// \brief Whether or not being referencing image.
       bool referencing;
 
+      /// \brief Whether or not being setting geo-referenced data.
+      bool setting;
+
       /**
        * \brief Actually load world file.
        * \param fileName Name of the world file.
@@ -163,6 +172,7 @@ namespace GUI {
           worldExists = true;
           ui.statusbar->showMessage(geoOk);
           ui.actionSaveWorldFile->setEnabled(false);
+          ui.actionSetData->setEnabled(true);
         }
         else {
           QMessageBox::critical(this, tr("Error"),
