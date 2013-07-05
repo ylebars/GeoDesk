@@ -21,6 +21,8 @@ find_package(
 
 find_package(Eigen3 REQUIRED)
 
+find_package(GDAL REQUIRED)
+
 find_package(Qt4 REQUIRED)
 
 set(
@@ -43,11 +45,13 @@ QT4_WRAP_UI(QT_FORM_HEADERS ${QT_FORM_FILES})
 
 link_directories(
         ${Boost_LIBRARY_DIRS}
+        ${GDAL_LIBRARY_DIRS}
 )
 include_directories(
         ${CMAKE_CURRENT_BINARY_DIR}
         ${Boost_INCLUDE_DIRS}
         ${EIGEN3_INCLUDE_DIR}
+        ${GDAL_INCLUDE_DIR}
 )
 
 include(${QT_USE_FILE})
@@ -63,4 +67,5 @@ target_link_libraries(
   ${EXECUTABLE_NAME}
   ${Boost_LIBRARIES}
   ${QT_LIBRARIES}
+  ${GDAL_LIBRARIES}
 )

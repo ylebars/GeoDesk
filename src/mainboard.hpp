@@ -18,6 +18,7 @@
  * \date 2013/07/02
  * \date 2013/07/03
  * \date 2013/07/04
+ * \date 2013/07/05
  */
 
 #include <boost/concept_check.hpp>
@@ -78,6 +79,9 @@ namespace GUI {
       /// \brief Load a world file.
       void on_actionLoadWorldFile_triggered ();
 
+      /// \brief Load a data file.
+      void on_actionLoadDataFile_triggered ();
+
       /// \brief Zooms in an image.
       void on_actionZoomIn_triggered ();
 
@@ -97,6 +101,9 @@ namespace GUI {
 
       /// \brief Save data which have been set by user.
       void on_actionSaveDataFile_triggered ();
+
+      /// \brief Save data in a new file.
+      void on_actionSaveDataFileAs_triggered ();
 
       /// \brief Give reference points for image geo-reference.
       void on_actionGeoreferenceImage_triggered ();
@@ -121,6 +128,9 @@ namespace GUI {
       /// \brief String indicating geo-referencing is disable.
       const QString geoNotOk = tr("Image without geo-reference.");
 
+      /// \brief String indicating there is no file to be opened.
+      const QString noFile = tr("No file to be opened.") ;
+
       /// \brief Number of reference points required.
       const size_t requiredReference = 3;
 
@@ -132,6 +142,9 @@ namespace GUI {
 
       /// \brief Name of the world file associated to the image.
       QString worldFileName;
+
+      /// \brief Name of the file containing geo-referenced data.
+      QString dataFileName;
 
       /// \brief Data to be stored.
       QString data;
@@ -163,12 +176,13 @@ namespace GUI {
        */
       void loadWorldFile (const QString &fileName) {
         /* The world file itself. */
-        QFile worldFile (worldFileName);
+        QFile worldFile (fileName);
         if (worldFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
           /* Stream on the file. */
           QTextStream worldFileStream (&worldFile);
           worldFileStream >> change(0, 0) >> change(1, 0) >> change(0, 1)
                           >> change(1, 1) >> change(0, 2) >> change(1, 2);
+          worldFile.close();
           worldExists = true;
           ui.statusbar->showMessage(geoOk);
           ui.actionSaveWorldFile->setEnabled(false);
@@ -177,6 +191,30 @@ namespace GUI {
         else {
           QMessageBox::critical(this, tr("Error"),
                                 tr("World file cannot be opened."));
+        }
+      }
+
+      /// \brief Actually save data file.
+      void saveDataFile () {
+        if (!dataFileName.isEmpty()) {
+          /* Data file itself. */
+          QFile dataFile (dataFileName);
+          if (dataFile.open(QIODevice::WriteOnly | QIODevice::Text
+                        | QIODevice::Truncate)) {
+              /* Stream on the data file. */
+              QTextStream dataFileStream (&dataFile);
+              dataFileStream << data;
+              dataFile.close();
+          }
+          else {
+            QMessageBox::critical(this, tr("Error"),
+                            tr("File named \"%1\" cannot "
+                               "be opened.").arg(dataFileName));
+          }
+          ui.statusbar->showMessage(done);
+        }
+        else {
+          ui.statusbar->showMessage(tr("No file name specified."));
         }
       }
 

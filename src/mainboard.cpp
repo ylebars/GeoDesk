@@ -14,6 +14,7 @@
  * \date 2013/07/02
  * \date 2013/07/03
  * \date 2013/07/04
+ * \date 2013/07/05
  */
 
 #include <QFileDialog>
@@ -80,13 +81,14 @@ void GUI::MainBoard::on_actionOpen_triggered () {
     }
 
     ui.actionSaveWorldFile->setEnabled(false);
-    data = "";
+    data.clear();
+    dataFileName.clear();
     referencing = false;
     setting = false;
     ui.actionGeoreferenceImage->setEnabled(true);
   }
   else {
-    ui.statusbar->showMessage(tr("No file to be opened."));
+    ui.statusbar->showMessage(noFile);
   }
 }
 
@@ -105,9 +107,40 @@ void GUI::MainBoard::on_actionLoadWorldFile_triggered () {
   if (!fileName.isEmpty()) {
     loadWorldFile(fileName);
     setting = false;
+    ui.statusbar->showMessage(done);
   }
   else {
-    ui.statusbar->showMessage(tr("No file to be opened."));
+    ui.statusbar->showMessage(noFile);
+  }
+}
+
+/* -- Load a data file. --------------------------------------------------- */
+void GUI::MainBoard::on_actionLoadDataFile_triggered () {
+  ui.statusbar->showMessage(tr("Loading data file."));
+
+  data.clear();
+  /* Name of the file to  be opened. */
+  dataFileName = QFileDialog::getOpenFileName(this, tr("Open file"),
+                                              QDir::currentPath(),
+                                              tr("Text files (*.txt);;"
+                                                 "All files (*)"));
+
+  if (!dataFileName.isEmpty()) {
+    /* The file itself. */
+    QFile file (dataFileName);
+    if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+      data = file.readAll();
+      file.close();
+    }
+    else {
+      QMessageBox::critical(this, tr("Error"),
+                            tr("File named \"%1\" cannot "
+                               "be opened.").arg(dataFileName));
+    }
+    ui.statusbar->showMessage(done);
+  }
+  else {
+    ui.statusbar->showMessage(noFile);
   }
 }
 
@@ -174,23 +207,22 @@ void GUI::MainBoard::on_actionSaveWorldFile_triggered () {
 void GUI::MainBoard::on_actionSaveDataFile_triggered () {
   ui.statusbar->showMessage(tr("Saving data file."));
 
-  /* Name of the file to contain data. */
-  const QString dataFileName =
-    QFileDialog::getSaveFileName(this, tr("Save data file"),
-                                 QDir::currentPath(),
-                                 tr("Text files (*.txt);;All files (*)"));
-  if (!dataFileName.isEmpty()) {
-    /* Data file itself. */
-    QFile dataFile (dataFileName);
-    dataFile.open(QIODevice::WriteOnly | QIODevice::Text
-                  | QIODevice::Truncate);
-    /* Stream on the data file. */
-    QTextStream dataFileStream (&dataFile);
-    dataFileStream << data;
-    dataFile.close();
+  if (dataFileName.isEmpty()) {
+    on_actionSaveDataFileAs_triggered();
   }
+  else {
+    saveDataFile();
+  }
+}
 
-  ui.statusbar->showMessage(done);
+/* -- Save data in a new file. -------------------------------------------- */
+void GUI::MainBoard::on_actionSaveDataFileAs_triggered () {
+  ui.statusbar->showMessage(tr("Saving data in a new file."));
+
+  dataFileName = QFileDialog::getSaveFileName(this, tr("Save data file as"),
+                                              QDir::currentPath(),
+                                   tr("Text files (*.txt);;All files (*)"));
+  saveDataFile();
 }
 
 /* -- Give reference point for image geo-reference. ----------------------- */

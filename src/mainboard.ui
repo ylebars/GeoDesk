@@ -31,9 +31,11 @@
     </property>
     <addaction name="actionOpen"/>
     <addaction name="actionLoadWorldFile"/>
+    <addaction name="actionLoadDataFile"/>
     <addaction name="separator"/>
     <addaction name="actionSaveWorldFile"/>
     <addaction name="actionSaveDataFile"/>
+    <addaction name="actionSaveDataFileAs"/>
     <addaction name="separator"/>
     <addaction name="actionQuit"/>
    </widget>
@@ -131,6 +133,19 @@
   <action name="actionSetData">
    <property name="text">
     <string>&amp;Set data</string>
+   </property>
+  </action>
+  <action name="actionLoadDataFile">
+   <property name="text">
+    <string>Load &amp;data file</string>
+   </property>
+  </action>
+  <action name="actionSaveDataFileAs">
+   <property name="text">
+    <string>Save &amp;data file as</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+S</string>
    </property>
   </action>
  </widget>
