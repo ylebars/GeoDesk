@@ -19,6 +19,7 @@
  * \date 2013/07/03
  * \date 2013/07/04
  * \date 2013/07/05
+ * \date 2013/07/08
  */
 
 #include <boost/concept_check.hpp>
@@ -33,6 +34,7 @@
 #include <QPoint>
 #include <utility>
 #include <vector>
+#include <boost/units/systems/si/length.hpp>
 
 #include "ui_mainboard.h"
 #include "projection.hpp"
@@ -40,6 +42,8 @@
 /// \brief Namespace for GUI definition.
 namespace GUI {
   using namespace Projection;
+  using namespace boost::units;
+  using namespace boost::units::si;
 
   /// \brief Class for program main window.
   class MainBoard: public QMainWindow {
