@@ -15,7 +15,7 @@ set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/CMakeModules)
 
 find_package(
         Boost 
-        1.31.1
+        1.36.0
         REQUIRED program_options
 )
 
