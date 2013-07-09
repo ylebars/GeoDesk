@@ -20,6 +20,7 @@
  * \date 2013/07/04
  * \date 2013/07/05
  * \date 2013/07/08
+ * \date 2013/07/09
  */
 
 #include <boost/concept_check.hpp>
@@ -35,9 +36,34 @@
 #include <utility>
 #include <vector>
 #include <boost/units/systems/si/length.hpp>
+#include <boost/units/static_constant.hpp>
 
 #include "ui_mainboard.h"
 #include "projection.hpp"
+
+/// \brief Namespace for library Boost.
+namespace boost{
+  /// \brief Namespace for units.
+  namespace units {
+    /// \brief Namespace for US units system.
+    namespace us {
+      /// \brief Base for US foot.
+      struct foot_base_unit: base_unit<foot_base_unit, length_dimension, 1>{};
+
+      /// \brief Creates US system.
+      typedef make_system<foot_base_unit>::type us_system;
+
+      /// \brief US dimensionless.
+      typedef unit<dimensionless_type, us_system> dimensionless;
+
+      /// \brief US foot.
+      typedef unit<length_dimension, us_system> length;
+
+      /// \brief Feet constant.
+      BOOST_UNITS_STATIC_CONSTANT(foot, length);
+    }
+  }
+}
 
 /// \brief Namespace for GUI definition.
 namespace GUI {

@@ -15,6 +15,7 @@
  * \date 2013/07/03
  * \date 2013/07/04
  * \date 2013/07/05
+ * \date 2013/07/09
  */
 
 #include <QFileDialog>
@@ -30,6 +31,7 @@
 #include <QFile>
 #include <QTextStream>
 #include <QMessageBox>
+#include <boost/units/systems/si/io.hpp>
 
 #include "mainboard.hpp"
 
@@ -297,14 +299,14 @@ void GUI::MainBoard::mousePressEvent (QMouseEvent* event) {
     /* Did the user push "OK" button? */
     bool ok;
     /* Value associated to the clicked localisation. */
-    const double value = QInputDialog::getDouble(this, tr("Enter value"),
-                                                 message, 0., 0., 15000., 2,
-                                                 &ok);
+    const quantity<length> value
+      (QInputDialog::getDouble(this, tr("Enter value"),
+                               message, 0., 0., 15000., 2, &ok) * meter);
     if (ok) {
       /* Stream on the QString which contains data. */
       QTextStream dataStream (&data);
       dataStream << pos.x() << ' ' << pos.y() << ' ' << b(0) << ' ' << b(1)
-                 << ' ' << value << '\n';
+                 << ' ' << value.value() << '\n';
     }
   }
 }
