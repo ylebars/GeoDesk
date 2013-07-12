@@ -16,6 +16,7 @@
  * \date 2013/07/04
  * \date 2013/07/05
  * \date 2013/07/09
+ * \date 2013/07/12
  */
 
 #include <QFileDialog>
@@ -32,6 +33,7 @@
 #include <QTextStream>
 #include <QMessageBox>
 #include <boost/units/systems/si/io.hpp>
+#include <gdal_priv.h>
 
 #include "mainboard.hpp"
 
@@ -39,55 +41,81 @@
 void GUI::MainBoard::on_actionOpen_triggered () {
   ui.statusbar->showMessage(tr("Opening image."));
 
+  /* Filter for standard images. */
+  const QString standard =
+    tr("Standard images (*.bmp *.gif *.jpg *.jpeg *.png *.pbm *.pgm *.ppm "
+       "*.tiff *.tif *.xbm *.xpm)");
+  /* Filter for geo-referenced images. */
+  const QString georeferenced =
+    tr("Geo-referenced images (*.tiff *.tif *.jp2 *.j2k *.jpf *.jpx *.jpm "
+       "*.mj2)");
+  /* Filter for all files. */
+  const QString all = tr("All files (*)");
+  /* List of filters. */
+  const QString filtersList = standard + ";;" + georeferenced + ";;" + all;
+  /* Filter selected by user. */
+  QString selectedFilter;
   /* Name of the file to be opened. */
   const QString fileName = QFileDialog::getOpenFileName(this, tr("Open file"),
                                                         QDir::currentPath(),
-                                          tr("Standard images (*.bmp *.gif "
-                                             "*.jpg *.jpeg *.png *.pbm *.pgm "
-                                             "*.ppm *.tiff *.xbm *.xpm);;"
-                                             "All files (*)"));
+                                                        filtersList,
+                                                        &selectedFilter);
 
   if (!fileName.isEmpty()) {
-    const QImage image (fileName);
-    if (image.isNull()) {
-      QMessageBox::information(this, tr("GeoDesk"),
-                               tr("Cannot load %1.").arg(fileName));
-      return;
+    if (selectedFilter == georeferenced) {
+      GDALAllRegister();
+
+      /* Pointer to the image */
+      GDALDataset* poDataset =
+        static_cast<GDALDataset*>(GDALOpen(fileName.toStdString().c_str(),
+                                  GA_ReadOnly));
+      if (poDataset == nullptr) {
+        QMessageBox::information(this, tr("GeoDesk"),
+                                 tr("Cannot load %1.").arg(fileName));
+      }
     }
+    else {
+      const QImage image (fileName);
+      if (image.isNull()) {
+        QMessageBox::information(this, tr("GeoDesk"),
+                                 tr("Cannot load %1.").arg(fileName));
+        return;
+      }
 
-    imageLabel->setPixmap(QPixmap::fromImage(image));
-    scaleFactor = 1.0;
+      imageLabel->setPixmap(QPixmap::fromImage(image));
+      scaleFactor = 1.0;
 
-    imageLabel->adjustSize();
+      imageLabel->adjustSize();
 
-    ui.actionZoomIn->setEnabled(true);
-    ui.actionZoomOut->setEnabled(true);
-    ui.actionNormalSize->setEnabled(true);
-    ui.actionSetData->setEnabled(false);
+      ui.actionZoomIn->setEnabled(true);
+      ui.actionZoomOut->setEnabled(true);
+      ui.actionNormalSize->setEnabled(true);
+      ui.actionSetData->setEnabled(false);
 
-    /* Information about the image file. */
-    const QFileInfo imageFile (fileName);
-    /* Extension of the image file. */
-    const QString imageExtension = imageFile.suffix();
-    /* Extension for the world file. */
-    const QString worldExtension = '.' + imageExtension.at(0)
-      + imageExtension.at(imageExtension.size() - 1) + 'w';
-    /* Name of the world file. */
-    worldFileName =
-      imageFile.canonicalPath() + QDir::separator()
-      + imageFile.completeBaseName() + worldExtension;
-    worldExists = false;
-    ui.statusbar->showMessage(geoNotOk);
-    if (QFile::exists(worldFileName)) {
-      loadWorldFile(worldFileName);
+      /* Information about the image file. */
+      const QFileInfo imageFile (fileName);
+      /* Extension of the image file. */
+      const QString imageExtension = imageFile.suffix();
+      /* Extension for the world file. */
+      const QString worldExtension = '.' + imageExtension.at(0)
+        + imageExtension.at(imageExtension.size() - 1) + 'w';
+      /* Name of the world file. */
+      worldFileName =
+        imageFile.canonicalPath() + QDir::separator()
+        + imageFile.completeBaseName() + worldExtension;
+      worldExists = false;
+      ui.statusbar->showMessage(geoNotOk);
+      if (QFile::exists(worldFileName)) {
+        loadWorldFile(worldFileName);
+      }
+
+      ui.actionSaveWorldFile->setEnabled(false);
+      data.clear();
+      dataFileName.clear();
+      referencing = false;
+      setting = false;
+      ui.actionGeoreferenceImage->setEnabled(true);
     }
-
-    ui.actionSaveWorldFile->setEnabled(false);
-    data.clear();
-    dataFileName.clear();
-    referencing = false;
-    setting = false;
-    ui.actionGeoreferenceImage->setEnabled(true);
   }
   else {
     ui.statusbar->showMessage(noFile);
