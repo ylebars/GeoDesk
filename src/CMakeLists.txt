@@ -21,7 +21,7 @@ find_package(
 
 find_package(Eigen3 REQUIRED)
 
-find_package(GDAL REQUIRED)
+# find_package(GDAL REQUIRED)
 
 find_package(Qt4 REQUIRED)
 

@@ -17,6 +17,7 @@
  * \date 2013/07/05
  * \date 2013/07/09
  * \date 2013/07/12
+ * \date 2013/07/16
  */
 
 #include <QFileDialog>
@@ -33,7 +34,7 @@
 #include <QTextStream>
 #include <QMessageBox>
 #include <boost/units/systems/si/io.hpp>
-#include <gdal_priv.h>
+// #include <gdal_priv.h>
 
 #include "mainboard.hpp"
 
@@ -63,16 +64,16 @@ void GUI::MainBoard::on_actionOpen_triggered () {
 
   if (!fileName.isEmpty()) {
     if (selectedFilter == georeferenced) {
-      GDALAllRegister();
-
-      /* Pointer to the image */
-      GDALDataset* poDataset =
-        static_cast<GDALDataset*>(GDALOpen(fileName.toStdString().c_str(),
-                                  GA_ReadOnly));
-      if (poDataset == nullptr) {
-        QMessageBox::information(this, tr("GeoDesk"),
-                                 tr("Cannot load %1.").arg(fileName));
-      }
+//       GDALAllRegister();
+// 
+//       /* Pointer to the image */
+//       GDALDataset* poDataset =
+//         static_cast<GDALDataset*>(GDALOpen(fileName.toStdString().c_str(),
+//                                   GA_ReadOnly));
+//       if (poDataset == nullptr) {
+//         QMessageBox::information(this, tr("GeoDesk"),
+//                                  tr("Cannot load %1.").arg(fileName));
+//       }
     }
     else {
       const QImage image (fileName);
