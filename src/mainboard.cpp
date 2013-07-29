@@ -18,6 +18,7 @@
  * \date 2013/07/09
  * \date 2013/07/12
  * \date 2013/07/16
+ * \date 2013/07/29
  */
 
 #include <QFileDialog>
@@ -92,6 +93,7 @@ void GUI::MainBoard::on_actionOpen_triggered () {
       ui.actionZoomOut->setEnabled(true);
       ui.actionNormalSize->setEnabled(true);
       ui.actionSetData->setEnabled(false);
+      ui.actionSampleIsobath->setEnabled(false);
 
       /* Information about the image file. */
       const QFileInfo imageFile (fileName);
@@ -115,6 +117,7 @@ void GUI::MainBoard::on_actionOpen_triggered () {
       dataFileName.clear();
       referencing = false;
       setting = false;
+      sampling = false;
       ui.actionGeoreferenceImage->setEnabled(true);
     }
   }
@@ -222,7 +225,7 @@ void GUI::MainBoard::on_actionSaveWorldFile_triggered () {
   worldFileStream << change(0, 0) << '\n'
                   << change(1, 0) << '\n'
                   << change(0, 1) << '\n'
-                  << change(1, 1) << "\n\n"
+                  << change(1, 1) << "\n"
                   << change(0, 2) << '\n'
                   << change(1, 2) << '\n';
 
@@ -264,13 +267,42 @@ void GUI::MainBoard::on_actionGeoreferenceImage_triggered () {
   worldExists = false;
   referencing = true;
   setting = false;
+  sampling = false;
   numberReferencePoints = 0;
 }
 
 /* -- Enable setting geo-referenced data. --------------------------------- */
 void GUI::MainBoard::on_actionSetData_triggered () {
   setting = true;
+  sampling = false;
   ui.statusbar->showMessage(tr("Setting geo-referenced data."));
+}
+
+/* -- Sampling an isobath. ------------------------------------------------ */
+void GUI::MainBoard::on_actionSampleIsobath_triggered () {
+  if (sampling) {
+    sampling = false;
+    ui.statusbar->showMessage(tr("Stop sampling isobath."));
+  }
+  else {
+    setting = false;
+    /* Did the user push the "OK" button? */
+    bool ok;
+    /* Isobath value. */
+//     const quantity<length> isobath
+//       (QInputDialog::getDouble(this, tr("Isobath value"),
+//                                tr("Enter isobath value in meter"), 0., 0.,
+//                                15000., 2, &ok) * meter);
+      const double isobath =
+        QInputDialog::getDouble(this, tr("Isobath value"),
+                                tr("Enter isobath value in meter"), 0., 0.,
+                                15000., 2, &ok);
+    if (ok) {
+      sampling = true;
+      value = isobath;
+    }
+    ui.statusbar->showMessage(tr("Sampling isobath"));
+  }
 }
 
 /* -- When mouse is left-clicked. ----------------------------------------- */
@@ -337,5 +369,15 @@ void GUI::MainBoard::mousePressEvent (QMouseEvent* event) {
       dataStream << pos.x() << ' ' << pos.y() << ' ' << b(0) << ' ' << b(1)
                  << ' ' << value.value() << '\n';
     }
+  }
+  else if (sampling) {
+    /* Vector for referential change. */
+    const Eigen::Vector3d x (pos.x(), pos.y(), 1.);
+    /* Coordinates in geographical referential. */
+    const Eigen::Vector2d b = change * x;
+    /* Stream on the QString which contains data. */
+    QTextStream dataStream (&data);
+    dataStream << pos.x() << ' ' << pos.y() << ' ' << b(0) << ' ' << b(1)
+               << ' ' << value << '\n';
   }
 }

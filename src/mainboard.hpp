@@ -22,6 +22,7 @@
  * \date 2013/07/08
  * \date 2013/07/09
  * \date 2013/07/10
+ * \date 2013/07/29
  */
 
 #include <boost/concept_check.hpp>
@@ -103,6 +104,7 @@ namespace GUI {
         ui.actionZoomOut->setEnabled(false);
         ui.actionNormalSize->setEnabled(false);
         ui.actionSaveWorldFile->setEnabled(false);
+        ui.actionSampleIsobath->setEnabled(false);
       }
 
       /// \brief Destructor.
@@ -150,6 +152,9 @@ namespace GUI {
       /// \brief Enable setting of geo-referenced data.
       void on_actionSetData_triggered ();
 
+      /// \brief Sampling an isobath.
+      void on_actionSampleIsobath_triggered ();
+
     protected:
       /**
        * \brief What to do when mouse is clicked.
@@ -178,6 +183,9 @@ namespace GUI {
 
       /// \brief Image scale factor.
       double scaleFactor;
+
+      /// \brief Value to be set.
+      double value;
 
       /// \brief Name of the world file associated to the image.
       QString worldFileName;
@@ -209,6 +217,9 @@ namespace GUI {
       /// \brief Whether or not being setting geo-referenced data.
       bool setting;
 
+      /// \brief Whether or not being sampling an isobath.
+      bool sampling;
+
       /**
        * \brief Actually load world file.
        * \param fileName Name of the world file.
@@ -226,6 +237,7 @@ namespace GUI {
           ui.statusbar->showMessage(geoOk);
           ui.actionSaveWorldFile->setEnabled(false);
           ui.actionSetData->setEnabled(true);
+          ui.actionSampleIsobath->setEnabled(true);
         }
         else {
           QMessageBox::critical(this, tr("Error"),

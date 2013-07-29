@@ -53,6 +53,7 @@
     </property>
     <addaction name="actionGeoreferenceImage"/>
     <addaction name="actionSetData"/>
+    <addaction name="actionSampleIsobath"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menu_Edit"/>
@@ -146,6 +147,11 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+Shift+S</string>
+   </property>
+  </action>
+  <action name="actionSampleIsobath">
+   <property name="text">
+    <string>Sample &amp;isobath</string>
    </property>
   </action>
  </widget>
