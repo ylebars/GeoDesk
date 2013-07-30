@@ -5,6 +5,7 @@
  * \file mainboard.hpp
  * \brief Definitions to create program main board.
  * \author Le Bars, Yoann
+ * \author Vallaeys, Valentin
  * \version 1.0
  * \date 2013/06/19
  * \date 2013/06/20
@@ -326,8 +327,8 @@ namespace GUI {
                               - imageLabel->width(), 0));
         /* Quantity of pixel not shown according vertical orientation. */
         const double verticalRemaining =
-          static_cast<double>(std::max(imageLabel->pixmap()->width()
-                              - imageLabel->width(), 0));
+          static_cast<double>(std::max(imageLabel->pixmap()->height()
+                              - imageLabel->height(), 0));
         /* How much horizontally scrolled. */
         const double horizontalPercentage =
           (horizontalMaximum > horizontalMinimum)?
@@ -347,12 +348,12 @@ namespace GUI {
         const double x =
           (static_cast<double>(localisation.x())
             + (horizontalRemaining * horizontalPercentage))
-          * scaleFactor;
+          / scaleFactor;
         /* Ordinate of the point clicked in the image. */
         const double y =
           (static_cast<double>(localisation.y())
             + (verticalRemaining * verticalPercentage))
-          * scaleFactor;
+          / scaleFactor;
 
         return Point2D (x, y);
       }
