@@ -7,7 +7,7 @@ project(GeoDesk CXX)
 # Set version information.
 set(VERSION_MAJOR 0)
 set(VERSION_MINOR 1)
-set(PATCH_VERSION 2)
+set(PATCH_VERSION 3)
 
 add_subdirectory(src)
 add_subdirectory(doc)

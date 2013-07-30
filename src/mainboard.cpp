@@ -19,6 +19,7 @@
  * \date 2013/07/12
  * \date 2013/07/16
  * \date 2013/07/29
+ * \date 2013/07/30
  */
 
 #include <QFileDialog>
@@ -307,6 +308,9 @@ void GUI::MainBoard::on_actionSampleIsobath_triggered () {
 
 /* -- When mouse is left-clicked. ----------------------------------------- */
 void GUI::MainBoard::mousePressEvent (QMouseEvent* event) {
+  /* Degree character. */
+  const QChar degree = 0x00B0;
+
   QWidget::mousePressEvent(event);
   if (!imageLabel->pixmap()) return;
   if (event->button() != Qt::LeftButton) return;
@@ -348,8 +352,6 @@ void GUI::MainBoard::mousePressEvent (QMouseEvent* event) {
     }
   }
   else if (setting) {
-    /* Degree character. */
-    const QChar degree = 0x00B0;
     /* Vector for referential change. */
     const Eigen::Vector3d x (pos.x(), pos.y(), 1.);
     /* Coordinates in geographical referential. */
@@ -379,5 +381,8 @@ void GUI::MainBoard::mousePressEvent (QMouseEvent* event) {
     QTextStream dataStream (&data);
     dataStream << pos.x() << ' ' << pos.y() << ' ' << b(0) << ' ' << b(1)
                << ' ' << value << '\n';
+    ui.statusbar->showMessage(tr("Isobath ") + value + tr(" m, ")
+                              + QString::number(b(0)) + degree + tr(" E,")
+                              + QString::number(b(1)) + degree + tr(" N"));
   }
 }

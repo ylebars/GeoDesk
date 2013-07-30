@@ -23,6 +23,7 @@
  * \date 2013/07/09
  * \date 2013/07/10
  * \date 2013/07/29
+ * \date 2013/07/30
  */
 
 #include <boost/concept_check.hpp>
@@ -90,10 +91,18 @@ namespace GUI {
       explicit MainBoard (): QMainWindow () {
         ui.setupUi(this);
 
+        /**
+         * \todo Initialising "imageLabel" should be done in file
+         * "mainboard.ui" (using Qt Designer).
+         */
         imageLabel = new QLabel;
         imageLabel->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
         imageLabel->setScaledContents(true);
 
+        /**
+         * \todo Initialising "scrollArea" should be done in file
+         * "mainboard.ui" (using Qt Designer).
+         */
         scrollArea = new QScrollArea;
         scrollArea->setWidget(imageLabel);
         setCentralWidget(scrollArea);
@@ -205,7 +214,7 @@ namespace GUI {
       /// \brief Get the GUI description.
       Ui::MainBoard ui;
 
-      /// \brief Number of given reference point .
+      /// \brief Number of given reference points.
       size_t numberReferencePoints;
 
       /// \brief Whether or not the world file exists.
@@ -338,12 +347,12 @@ namespace GUI {
         const double x =
           (static_cast<double>(localisation.x())
             + (horizontalRemaining * horizontalPercentage))
-          / scaleFactor;
+          * scaleFactor;
         /* Ordinate of the point clicked in the image. */
         const double y =
           (static_cast<double>(localisation.y())
             + (verticalRemaining * verticalPercentage))
-          / scaleFactor;
+          * scaleFactor;
 
         return Point2D (x, y);
       }
