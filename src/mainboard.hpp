@@ -25,6 +25,7 @@
  * \date 2013/07/10
  * \date 2013/07/29
  * \date 2013/07/30
+ * \date 2013/07/31
  */
 
 #include <boost/concept_check.hpp>
@@ -323,12 +324,12 @@ namespace GUI {
           static_cast<double>(scrollArea->verticalScrollBar()->maximum());
         /* Quantity of pixel not shown according horizontal orientation. */
         const double horizontalRemaining =
-          static_cast<double>(std::max(imageLabel->pixmap()->width()
-                              - imageLabel->width(), 0));
+          std::max((imageLabel->pixmap()->width() * scaleFactor)
+                   - imageLabel->width(), 0.);
         /* Quantity of pixel not shown according vertical orientation. */
         const double verticalRemaining =
-          static_cast<double>(std::max(imageLabel->pixmap()->height()
-                              - imageLabel->height(), 0));
+          std::max((imageLabel->pixmap()->height() * scaleFactor)
+                   - imageLabel->height(), 0.);
         /* How much horizontally scrolled. */
         const double horizontalPercentage =
           (horizontalMaximum > horizontalMinimum)?
@@ -348,12 +349,12 @@ namespace GUI {
         const double x =
           (static_cast<double>(localisation.x())
             + (horizontalRemaining * horizontalPercentage))
-          / scaleFactor;
+           / scaleFactor;
         /* Ordinate of the point clicked in the image. */
         const double y =
           (static_cast<double>(localisation.y())
             + (verticalRemaining * verticalPercentage))
-          / scaleFactor;
+           / scaleFactor;
 
         return Point2D (x, y);
       }
