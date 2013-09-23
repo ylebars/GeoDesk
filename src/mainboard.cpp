@@ -226,7 +226,7 @@ void GUI::MainBoard::on_actionSaveWorldFile_triggered () {
   worldFileStream << change(0, 0) << '\n'
                   << change(1, 0) << '\n'
                   << change(0, 1) << '\n'
-                  << change(1, 1) << "\n"
+                  << change(1, 1) << '\n'
                   << change(0, 2) << '\n'
                   << change(1, 2) << '\n';
 
