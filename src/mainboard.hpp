@@ -26,6 +26,7 @@
  * \date 2013/07/29
  * \date 2013/07/30
  * \date 2013/07/31
+ * \date 2013/09/23
  */
 
 #include <boost/concept_check.hpp>
@@ -300,7 +301,7 @@ namespace GUI {
         adjustScrollBar(scrollArea->verticalScrollBar(), factor);
 
         ui.actionZoomIn->setEnabled(scaleFactor < 3.0);
-        ui.actionZoomOut->setEnabled(scaleFactor > 0.333);
+        ui.actionZoomOut->setEnabled(scaleFactor > 0.1);
       }
 
       /**
