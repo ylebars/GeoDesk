@@ -20,6 +20,7 @@
  * \date 2013/07/16
  * \date 2013/07/29
  * \date 2013/07/30
+ * \date 2013/09/24
  */
 
 #include <QFileDialog>
@@ -256,7 +257,8 @@ void GUI::MainBoard::on_actionSaveDataFileAs_triggered () {
 
   dataFileName = QFileDialog::getSaveFileName(this, tr("Save data file as"),
                                               QDir::currentPath(),
-                                   tr("Text files (*.txt);;All files (*)"));
+                                              tr("Text files (*.txt);;"
+                                                 "All files (*)"));
   saveDataFile();
 }
 
