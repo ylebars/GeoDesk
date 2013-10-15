@@ -27,6 +27,7 @@
  * \date 2013/07/30
  * \date 2013/07/31
  * \date 2013/09/23
+ * \date 2013/10/15
  */
 
 #include <boost/concept_check.hpp>
@@ -262,8 +263,8 @@ namespace GUI {
         if (!dataFileName.isEmpty()) {
           /* Data file itself. */
           QFile dataFile (dataFileName);
-          if (dataFile.open(QIODevice::WriteOnly | QIODevice::Text
-                        | QIODevice::Truncate)) {
+          if (dataFile.open(QIODevice::WriteOnly | QIODevice::Text |
+                            QIODevice::Truncate)) {
               /* Stream on the data file. */
               QTextStream dataFileStream (&dataFile);
               dataFileStream << data;
@@ -271,8 +272,8 @@ namespace GUI {
           }
           else {
             QMessageBox::critical(this, tr("Error"),
-                            tr("File named \"%1\" cannot "
-                               "be opened.").arg(dataFileName));
+                                  tr("File named \"%1\" cannot "
+                                     "be opened.").arg(dataFileName));
           }
           ui.statusbar->showMessage(done);
         }

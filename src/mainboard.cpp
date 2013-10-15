@@ -21,6 +21,7 @@
  * \date 2013/07/29
  * \date 2013/07/30
  * \date 2013/09/24
+ * \date 2013/10/15
  */
 
 #include <QFileDialog>
@@ -135,10 +136,10 @@ void GUI::MainBoard::on_actionLoadWorldFile_triggered () {
   /* Name of the file to be opened. */
   const QString fileName = QFileDialog::getOpenFileName(this, tr("Open file"),
                                                         QDir::currentPath(),
-                                          tr("World files (*.bpw *.gfw "
-                                             "*.jgw *.pgw *.pmw "
-                                             "*.tfw *.twfx *.xmw);;"
-                                             "All files (*)"));
+                                                tr("World files (*.bpw *.gfw "
+                                                   "*.jgw *.pgw *.pmw "
+                                                   "*.tfw *.twfx *.xmw);;"
+                                                   "All files (*)"));
 
   if (!fileName.isEmpty()) {
     loadWorldFile(fileName);
@@ -333,12 +334,12 @@ void GUI::MainBoard::mousePressEvent (QMouseEvent* event) {
     r2[numberReferencePoints].x() =
       QInputDialog::getDouble(this, tr("Longitude"),
                               tr("Longitude in decimal degrees east"),
-                              0., -180., 180., 2, &ok);
+                              0., -180., 180., 4, &ok);
     if (!ok) return;
     r2[numberReferencePoints].y() =
       QInputDialog::getDouble(this, tr("Latitude"),
                               tr("Latitude in decimal degrees north"),
-                              0., -90., 90., 2, &ok);
+                              0., -90., 90., 4, &ok);
     if (ok) ++numberReferencePoints;
     ui.statusbar->showMessage(
       tr("Referencing: point %1 / %2").arg(numberReferencePoints
