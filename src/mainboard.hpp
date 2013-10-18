@@ -139,7 +139,7 @@ namespace GUI {
       void on_actionNormalSize_triggered ();
 
       /// \brief Save reference points, used for image geo-referencing.
-      void on_actionSaveReferencePoints ();
+      void on_actionSaveReferencePoints_triggered ();
 
       /**
        * \brief Save a world file associated to an image.

@@ -98,6 +98,8 @@ void GUI::MainBoard::on_actionOpen_triggered () {
       ui.actionNormalSize->setEnabled(true);
       ui.actionSetData->setEnabled(false);
       ui.actionSampleIsobath->setEnabled(false);
+      ui.actionSetData->setChecked(false);
+      ui.actionSampleIsobath->setChecked(false);
 
       /* Information about the image file. */
       const QFileInfo imageFile (fileName);
@@ -123,6 +125,8 @@ void GUI::MainBoard::on_actionOpen_triggered () {
       setting = false;
       sampling = false;
       ui.actionGeoreferenceImage->setEnabled(true);
+      ui.actionSaveDataFile->setEnabled(false);
+      ui.actionSaveDataFileAs->setEnabled(false);
     }
   }
   else {
@@ -207,7 +211,7 @@ void GUI::MainBoard::on_actionNormalSize_triggered () {
 }
 
 /* -- Save reference points used for image geo-referencing. --------------- */
-void GUI::MainBoard::on_actionSaveReferencePoints () {
+void GUI::MainBoard::on_actionSaveReferencePoints_triggered () {
 
 }
 
@@ -283,19 +287,26 @@ void GUI::MainBoard::on_actionGeoreferenceImage_triggered () {
 
 /* -- Enable setting geo-referenced data. --------------------------------- */
 void GUI::MainBoard::on_actionSetData_triggered () {
-  setting = true;
-  sampling = false;
-  ui.statusbar->showMessage(tr("Setting geo-referenced data."));
+  if (setting) {
+    setting = false;
+    ui.actionSampleIsobath->setEnabled(true);
+    ui.statusbar->showMessage(tr("Stop setting geo-referenced data."));
+  }
+  else {
+    setting = true;
+    ui.actionSampleIsobath->setEnabled(false);
+    ui.statusbar->showMessage(tr("Setting geo-referenced data."));
+  }
 }
 
 /* -- Sampling an isobath. ------------------------------------------------ */
 void GUI::MainBoard::on_actionSampleIsobath_triggered () {
   if (sampling) {
     sampling = false;
+    ui.actionSetData->setEnabled(true);
     ui.statusbar->showMessage(tr("Stop sampling isobath."));
   }
   else {
-    setting = false;
     /* Did the user push the "OK" button? */
     bool ok;
     /* Isobath value. */
@@ -310,8 +321,12 @@ void GUI::MainBoard::on_actionSampleIsobath_triggered () {
     if (ok) {
       sampling = true;
       value = isobath;
+      ui.actionSetData->setEnabled(false);
+      ui.statusbar->showMessage(tr("Sampling isobath"));
     }
-    ui.statusbar->showMessage(tr("Sampling isobath"));
+    else {
+      ui.actionSampleIsobath->setChecked(false);
+    }
   }
 }
 
@@ -379,6 +394,8 @@ void GUI::MainBoard::mousePressEvent (QMouseEvent* event) {
       QTextStream dataStream (&data);
       dataStream << pos.x() << ' ' << pos.y() << ' ' << b(0) << ' ' << b(1)
                  << ' ' << value.value() << '\n';
+      ui.actionSaveDataFile->setEnabled(true);
+      ui.actionSaveDataFileAs->setEnabled(true);
     }
   }
   else if (sampling) {
@@ -393,5 +410,7 @@ void GUI::MainBoard::mousePressEvent (QMouseEvent* event) {
     ui.statusbar->showMessage(tr("Isobath ") + value + tr(" m, ")
                               + QString::number(b(0)) + degree + tr(" E,")
                               + QString::number(b(1)) + degree + tr(" N"));
+    ui.actionSaveDataFile->setEnabled(true);
+    ui.actionSaveDataFileAs->setEnabled(true);
   }
 }

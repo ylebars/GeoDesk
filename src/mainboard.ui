@@ -127,6 +127,9 @@
    </property>
   </action>
   <action name="actionSaveDataFile">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>&amp;Save data file</string>
    </property>
@@ -149,7 +152,7 @@
   </action>
   <action name="actionSetData">
    <property name="checkable">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
    <property name="enabled">
     <bool>false</bool>
@@ -164,6 +167,9 @@
    </property>
   </action>
   <action name="actionSaveDataFileAs">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Save &amp;data file as</string>
    </property>
@@ -172,6 +178,9 @@
    </property>
   </action>
   <action name="actionSampleIsobath">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="enabled">
     <bool>false</bool>
    </property>
