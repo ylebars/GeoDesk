@@ -3,12 +3,13 @@
 
 /**
  * \file config.hpp.in
- * \brief Set variables dependant on the version of the code.
+ * \brief Set variables that depend on the version of the code.
  * \author Le Bars, Yoann
  * \version 1.0
  * \date 2012/01/27
  * \date 2013/01/04
  * \date 2013/06/19
+ * \date 2013/10/18
  */
 
 #include <boost/concept_check.hpp>

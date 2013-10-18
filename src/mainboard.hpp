@@ -28,6 +28,7 @@
  * \date 2013/07/31
  * \date 2013/09/23
  * \date 2013/10/15
+ * \date 2013/10/18
  */
 
 #include <boost/concept_check.hpp>
@@ -110,14 +111,6 @@ namespace GUI {
         scrollArea = new QScrollArea;
         scrollArea->setWidget(imageLabel);
         setCentralWidget(scrollArea);
-
-        ui.actionGeoreferenceImage->setEnabled(false);
-        ui.actionSetData->setEnabled(false);
-        ui.actionZoomIn->setEnabled(false);
-        ui.actionZoomOut->setEnabled(false);
-        ui.actionNormalSize->setEnabled(false);
-        ui.actionSaveWorldFile->setEnabled(false);
-        ui.actionSampleIsobath->setEnabled(false);
       }
 
       /// \brief Destructor.
@@ -144,6 +137,9 @@ namespace GUI {
 
       /// \brief Gets the image back to its normal size.
       void on_actionNormalSize_triggered ();
+
+      /// \brief Save reference points, used for image geo-referencing.
+      void on_actionSaveReferencePoints ();
 
       /**
        * \brief Save a world file associated to an image.

@@ -22,6 +22,7 @@
  * \date 2013/07/30
  * \date 2013/09/24
  * \date 2013/10/15
+ * \date 2013/10/18
  */
 
 #include <QFileDialog>
@@ -203,6 +204,11 @@ void GUI::MainBoard::on_actionNormalSize_triggered () {
   ui.actionZoomIn->setEnabled(true);
   ui.actionZoomOut->setEnabled(true);
   ui.statusbar->showMessage(done);
+}
+
+/* -- Save reference points used for image geo-referencing. --------------- */
+void GUI::MainBoard::on_actionSaveReferencePoints () {
+
 }
 
 /* -- Save world file associated to opened image. ------------------------- */

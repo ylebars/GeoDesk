@@ -33,6 +33,7 @@
     <addaction name="actionLoadWorldFile"/>
     <addaction name="actionLoadDataFile"/>
     <addaction name="separator"/>
+    <addaction name="actionSaveReferencePoints"/>
     <addaction name="actionSaveWorldFile"/>
     <addaction name="actionSaveDataFile"/>
     <addaction name="actionSaveDataFileAs"/>
@@ -83,6 +84,9 @@
    </property>
   </action>
   <action name="actionZoomIn">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Zoom &amp;in</string>
    </property>
@@ -91,6 +95,9 @@
    </property>
   </action>
   <action name="actionZoomOut">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Zoom &amp;out</string>
    </property>
@@ -99,6 +106,9 @@
    </property>
   </action>
   <action name="actionNormalSize">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>&amp;Normal size</string>
    </property>
@@ -109,6 +119,9 @@
    </property>
   </action>
   <action name="actionSaveWorldFile">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Save &amp;world file</string>
    </property>
@@ -122,6 +135,9 @@
    </property>
   </action>
   <action name="actionGeoreferenceImage">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>&amp;Geo-reference image</string>
    </property>
@@ -132,6 +148,12 @@
    </property>
   </action>
   <action name="actionSetData">
+   <property name="checkable">
+    <bool>false</bool>
+   </property>
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>&amp;Set data</string>
    </property>
@@ -150,8 +172,19 @@
    </property>
   </action>
   <action name="actionSampleIsobath">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Sample &amp;isobath</string>
+   </property>
+  </action>
+  <action name="actionSaveReferencePoints">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Save &amp;reference points</string>
    </property>
   </action>
  </widget>
