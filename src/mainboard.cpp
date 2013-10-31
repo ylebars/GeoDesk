@@ -215,7 +215,26 @@ void GUI::MainBoard::on_actionNormalSize_triggered () {
 
 /* -- Save reference points used for image geo-referencing. --------------- */
 void GUI::MainBoard::on_actionSaveReferencePoints_triggered () {
+  ui.statusbar->showMessage(tr("Saving reference points."));
 
+  /* File containing reference points. */
+  QFile referencePointFile (referencePointFileName);
+  referencePointFile.open(QIODevice::WriteOnly | QIODevice::Text
+                          | QIODevice::Truncate);
+  /* Stream on the file. */
+  QTextStream referencePointFileStream (&referencePointFile);
+
+  for (ReferencePointListType::iterator point = referencePointList.begin();
+       point != referencePointList.end(); ++point)
+    referencePointFileStream << point->first.x() << ' ' << point->first.y()
+                             << ' ' << point->second.x() << ' '
+                             << point->second.y() << '\n';
+
+  referencePointFile.close();
+
+  ui.actionSaveReferencePoints->setEnabled(false);
+  ui.statusbar->showMessage(tr("Reference points saved in "
+                               "\"%1\"").arg(worldFileName));
 }
 
 /* -- Save world file associated to opened image. ------------------------- */
@@ -228,7 +247,10 @@ void GUI::MainBoard::on_actionSaveWorldFile_triggered () {
       QMessageBox::question(this, tr("Overwrite"),
                             tr("World file already exists, overwrite it?"),
                             QMessageBox::Yes | QMessageBox::No);
-    if (choice == QMessageBox::No) return;
+    if (choice == QMessageBox::No) {
+      ui.statusbar->showMessage(aborted);
+      return;
+    }
   }
 
   /* World file itself. */
@@ -365,10 +387,10 @@ void GUI::MainBoard::mousePressEvent (QMouseEvent* event) {
                               tr("Latitude in decimal degrees north"),
                               0., -90., 90., 4, &ok);
     if (ok) {
-      ++numberReferencePoints;
       referencePointList.push_back(std::make_pair(pos,
                                                   r2[numberReferencePoints]));
       ui.actionSaveReferencePoints->setEnabled(true);
+      ++numberReferencePoints;
     }
     ui.statusbar->showMessage(
       tr("Referencing: point %1 / %2").arg(numberReferencePoints

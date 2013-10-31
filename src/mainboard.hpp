@@ -175,6 +175,9 @@ namespace GUI {
       virtual void mousePressEvent (QMouseEvent *event);
 
     private:
+      /// \brief Type for list containing reference points.
+      typedef std::list<std::pair<Point2D, Point2D>> ReferencePointListType;
+
       /// \brief String indicating operation complete.
       const QString done = tr("Done.");
 
@@ -185,7 +188,10 @@ namespace GUI {
       const QString geoNotOk = tr("Image without geo-reference.");
 
       /// \brief String indicating there is no file to be opened.
-      const QString noFile = tr("No file to be opened.") ;
+      const QString noFile = tr("No file to be opened.");
+
+      /// \brief String indicating an operation has been aborted.
+      const QString aborted = tr("Operation aborted.");
 
       /// \brief Number of reference points required.
       const size_t requiredReference = 3;
@@ -194,7 +200,7 @@ namespace GUI {
       Eigen::Matrix<double, 2, 3> change;
 
       /// \brief List of reference points.
-      std::list< std::pair<Point2D, Point2D> > referencePointList;
+      ReferencePointListType referencePointList;
 
       /// \brief Image scale factor.
       double scaleFactor;
@@ -207,6 +213,9 @@ namespace GUI {
 
       /// \brief Name of the file containing geo-referenced data.
       QString dataFileName;
+
+      /// \brief Name of the file containing reference points.
+      QString referencePointFileName;
 
       /// \brief Data to be stored.
       QString data;
