@@ -24,6 +24,7 @@
  * \date 2013/10/15
  * \date 2013/10/18
  * \date 2013/10/21
+ * \date 2013/10/31
  */
 
 #include <QFileDialog>
@@ -120,6 +121,7 @@ void GUI::MainBoard::on_actionOpen_triggered () {
       }
 
       ui.actionSaveWorldFile->setEnabled(false);
+      ui.actionSaveReferencePoints->setEnabled(false);
       data.clear();
       dataFileName.clear();
       referencing = false;
@@ -362,7 +364,12 @@ void GUI::MainBoard::mousePressEvent (QMouseEvent* event) {
       QInputDialog::getDouble(this, tr("Latitude"),
                               tr("Latitude in decimal degrees north"),
                               0., -90., 90., 4, &ok);
-    if (ok) ++numberReferencePoints;
+    if (ok) {
+      ++numberReferencePoints;
+      referencePointList.push_back(std::make_pair(pos,
+                                                  r2[numberReferencePoints]));
+      ui.actionSaveReferencePoints->setEnabled(true);
+    }
     ui.statusbar->showMessage(
       tr("Referencing: point %1 / %2").arg(numberReferencePoints
                                            + 1).arg(requiredReference));

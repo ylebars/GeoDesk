@@ -30,6 +30,7 @@
  * \date 2013/10/15
  * \date 2013/10/18
  * \date 2013/10/21
+ * \date 2013/10/31
  */
 
 #include <boost/concept_check.hpp>
@@ -44,6 +45,7 @@
 #include <QPoint>
 #include <utility>
 #include <vector>
+#include <list>
 #include <boost/units/systems/si/length.hpp>
 #include <boost/units/static_constant.hpp>
 #include <boost/units/conversion.hpp>
@@ -190,6 +192,9 @@ namespace GUI {
 
       /// \brief Matrix to compute referential change.
       Eigen::Matrix<double, 2, 3> change;
+
+      /// \brief List of reference points.
+      std::list< std::pair<Point2D, Point2D> > referencePointList;
 
       /// \brief Image scale factor.
       double scaleFactor;
