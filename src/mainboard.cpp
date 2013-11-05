@@ -124,6 +124,7 @@ void GUI::MainBoard::on_actionOpen_triggered () {
       ui.actionSaveReferencePoints->setEnabled(false);
       data.clear();
       dataFileName.clear();
+      referencePointFileName.clear();
       referencing = false;
       setting = false;
       sampling = false;
