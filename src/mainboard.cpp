@@ -25,6 +25,8 @@
  * \date 2013/10/18
  * \date 2013/10/21
  * \date 2013/10/31
+ * \date 2013/11/05
+ * \date 2013/11/06
  */
 
 #include <QFileDialog>
@@ -122,6 +124,7 @@ void GUI::MainBoard::on_actionOpen_triggered () {
 
       ui.actionSaveWorldFile->setEnabled(false);
       ui.actionSaveReferencePoints->setEnabled(false);
+      ui.actionSaveReferencePointsAs->setEnabled(false);
       data.clear();
       dataFileName.clear();
       referencePointFileName.clear();
@@ -218,24 +221,25 @@ void GUI::MainBoard::on_actionNormalSize_triggered () {
 void GUI::MainBoard::on_actionSaveReferencePoints_triggered () {
   ui.statusbar->showMessage(tr("Saving reference points."));
 
-  /* File containing reference points. */
-  QFile referencePointFile (referencePointFileName);
-  referencePointFile.open(QIODevice::WriteOnly | QIODevice::Text
-                          | QIODevice::Truncate);
-  /* Stream on the file. */
-  QTextStream referencePointFileStream (&referencePointFile);
+  if (dataFileName.isEmpty()) {
+    on_actionSaveReferencePointsAs_triggered();;
+  }
+  else {
+    saveReferencePointFile();
+  }
+}
 
-  for (ReferencePointListType::iterator point = referencePointList.begin();
-       point != referencePointList.end(); ++point)
-    referencePointFileStream << point->first.x() << ' ' << point->first.y()
-                             << ' ' << point->second.x() << ' '
-                             << point->second.y() << '\n';
+/* -- Save reference points in a new file. -------------------------------- */
+void GUI::MainBoard::on_actionSaveReferencePointsAs_triggered () {
+  ui.statusbar->showMessage(tr("Saving reference points in a new file."));
 
-  referencePointFile.close();
-
-  ui.actionSaveReferencePoints->setEnabled(false);
-  ui.statusbar->showMessage(tr("Reference points saved in "
-                               "\"%1\"").arg(worldFileName));
+  dataFileName = QFileDialog::getSaveFileName(this,
+                                              tr("Save reference points "
+                                                 "in a new file"),
+                                              QDir::currentPath(),
+                                              tr("Text files (*.txt);;"
+                                                 "All files (*)"));
+  saveReferencePointFile();
 }
 
 /* -- Save world file associated to opened image. ------------------------- */
@@ -391,6 +395,7 @@ void GUI::MainBoard::mousePressEvent (QMouseEvent* event) {
       referencePointList.push_back(std::make_pair(pos,
                                                   r2[numberReferencePoints]));
       ui.actionSaveReferencePoints->setEnabled(true);
+      ui.actionSaveReferencePointsAs->setEnabled(true);
       ++numberReferencePoints;
     }
     ui.statusbar->showMessage(

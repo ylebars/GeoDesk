@@ -31,6 +31,7 @@
  * \date 2013/10/18
  * \date 2013/10/21
  * \date 2013/10/31
+ * \date 2013/11/06
  */
 
 #include <boost/concept_check.hpp>
@@ -143,6 +144,9 @@ namespace GUI {
 
       /// \brief Save reference points, used for image geo-referencing.
       void on_actionSaveReferencePoints_triggered ();
+
+      /// \brief Save reference points in a new file.
+      void on_actionSaveReferencePointsAs_triggered ();
 
       /**
        * \brief Save a world file associated to an image.
@@ -290,6 +294,40 @@ namespace GUI {
         }
         else {
           ui.statusbar->showMessage(tr("No file name specified."));
+        }
+      }
+
+      /// \brief Actually save reference points.
+      void saveReferencePointFile () {
+        if (!referencePointFileName.isEmpty()) {
+          /* File containing reference points. */
+          QFile referencePointFile (referencePointFileName);
+          if (referencePointFile.open(QIODevice::WriteOnly | QIODevice::Text
+                                  | QIODevice::Truncate)) {
+            /* Stream on the file. */
+            QTextStream referencePointFileStream (&referencePointFile);
+
+            for (ReferencePointListType::iterator point =
+                   referencePointList.begin();
+                 point != referencePointList.end(); ++point)
+              referencePointFileStream << point->first.x() << ' '
+                                       << point->first.y() << ' '
+                                       << point->second.x() << ' '
+                                       << point->second.y() << '\n';
+
+            referencePointFile.close();
+            ui.actionSaveReferencePoints->setEnabled(false);
+            ui.actionSaveReferencePointsAs->setEnabled(false);
+          }
+          else {
+            QMessageBox::critical(this, tr("Error"),
+                                  tr("File named \"%1\" cannot "
+                                     "be opened.").arg(dataFileName));
+          }
+          ui.statusbar->showMessage(done);
+        }
+        else {
+          ui.statusbar->showMessage(tr("No file name specified"));
         }
       }
 
