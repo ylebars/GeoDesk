@@ -27,6 +27,7 @@
  * \date 2013/10/31
  * \date 2013/11/05
  * \date 2013/11/06
+ * \date 2013/11/12
  */
 
 #include <QFileDialog>
@@ -221,7 +222,7 @@ void GUI::MainBoard::on_actionNormalSize_triggered () {
 void GUI::MainBoard::on_actionSaveReferencePoints_triggered () {
   ui.statusbar->showMessage(tr("Saving reference points."));
 
-  if (dataFileName.isEmpty()) {
+  if (referencePointFileName.isEmpty()) {
     on_actionSaveReferencePointsAs_triggered();;
   }
   else {
@@ -233,12 +234,14 @@ void GUI::MainBoard::on_actionSaveReferencePoints_triggered () {
 void GUI::MainBoard::on_actionSaveReferencePointsAs_triggered () {
   ui.statusbar->showMessage(tr("Saving reference points in a new file."));
 
-  dataFileName = QFileDialog::getSaveFileName(this,
-                                              tr("Save reference points "
-                                                 "in a new file"),
-                                              QDir::currentPath(),
-                                              tr("Text files (*.txt);;"
-                                                 "All files (*)"));
+  referencePointFileName = QFileDialog::getSaveFileName(this,
+                                                        tr("Save reference "
+                                                           "points in a new "
+                                                           "file"),
+                                                        QDir::currentPath(),
+                                                        tr("Text files "
+                                                           "(*.txt);;"
+                                                           "All files (*)"));
   saveReferencePointFile();
 }
 

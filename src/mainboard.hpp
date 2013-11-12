@@ -32,6 +32,7 @@
  * \date 2013/10/21
  * \date 2013/10/31
  * \date 2013/11/06
+ * \date 2013/11/12
  */
 
 #include <boost/concept_check.hpp>
@@ -303,7 +304,7 @@ namespace GUI {
           /* File containing reference points. */
           QFile referencePointFile (referencePointFileName);
           if (referencePointFile.open(QIODevice::WriteOnly | QIODevice::Text
-                                  | QIODevice::Truncate)) {
+                                      | QIODevice::Truncate)) {
             /* Stream on the file. */
             QTextStream referencePointFileStream (&referencePointFile);
 
