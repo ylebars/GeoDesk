@@ -31,6 +31,7 @@
     </property>
     <addaction name="actionOpen"/>
     <addaction name="actionLoadWorldFile"/>
+    <addaction name="actionLoadReferencePoints"/>
     <addaction name="actionLoadDataFile"/>
     <addaction name="separator"/>
     <addaction name="actionSaveReferencePoints"/>
@@ -203,6 +204,11 @@
    </property>
    <property name="text">
     <string>Save reference &amp;points as</string>
+   </property>
+  </action>
+  <action name="actionLoadReferencePoints">
+   <property name="text">
+    <string>Lo&amp;ad reference points</string>
    </property>
   </action>
  </widget>

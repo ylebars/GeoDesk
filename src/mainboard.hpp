@@ -33,6 +33,7 @@
  * \date 2013/10/31
  * \date 2013/11/06
  * \date 2013/11/12
+ * \date 2013/11/22
  */
 
 #include <boost/concept_check.hpp>
@@ -131,6 +132,9 @@ namespace GUI {
       /// \brief Load a world file.
       void on_actionLoadWorldFile_triggered ();
 
+      /// \brief Load reference points.
+      void on_actionLoadReferencePoints_triggered ();
+
       /// \brief Load a data file.
       void on_actionLoadDataFile_triggered ();
 
@@ -180,8 +184,11 @@ namespace GUI {
       virtual void mousePressEvent (QMouseEvent *event);
 
     private:
+      /// \brief Type for a reference point.
+      typedef std::pair<Point2D, Point2D> ReferencePointType;
+
       /// \brief Type for list containing reference points.
-      typedef std::list<std::pair<Point2D, Point2D>> ReferencePointListType;
+      typedef std::list<ReferencePointType> ReferencePointListType;
 
       /// \brief String indicating operation complete.
       const QString done = tr("Done.");
@@ -197,6 +204,12 @@ namespace GUI {
 
       /// \brief String indicating an operation has been aborted.
       const QString aborted = tr("Operation aborted.");
+
+      /// \brief String indicating a file is about to be opened.
+      const QString openFile = tr("Open file");
+
+      /// \brief String for opening text files or any file.
+      const QString textOrAny = tr("Text files (*.txt);;All files (*)");
 
       /// \brief Number of reference points required.
       const size_t requiredReference = 3;

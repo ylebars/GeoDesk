@@ -28,6 +28,7 @@
  * \date 2013/11/05
  * \date 2013/11/06
  * \date 2013/11/12
+ * \date 2013/11/22
  */
 
 #include <QFileDialog>
@@ -164,16 +165,42 @@ void GUI::MainBoard::on_actionLoadWorldFile_triggered () {
   }
 }
 
+/* -- Load reference points. ---------------------------------------------- */
+void GUI::MainBoard::on_actionLoadReferencePoints_triggered () {
+  ui.statusbar->showMessage(tr("Loading reference points."));
+
+  referencePointList.clear();
+  referencePointFileName = QFileDialog::getOpenFileName(this, openFile,
+                                                        QDir::currentPath(),
+                                                        textOrAny);
+
+  if (!referencePointFileName.isEmpty()) {
+    /* The file itself. */
+    QFile file (referencePointFileName);
+    QFile file (dataFileName);
+    if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+      
+    }
+    else {
+      QMessageBox::critical(this, tr("Error"),
+                            tr("File named \"%1\" cannot "
+                               "be opened.").arg(dataFileName));
+    }
+    ui.statusbar->showMessage(done);
+  }
+  else {
+    ui.statusbar->showMessage(noFile);
+  }
+}
+
 /* -- Load a data file. --------------------------------------------------- */
 void GUI::MainBoard::on_actionLoadDataFile_triggered () {
   ui.statusbar->showMessage(tr("Loading data file."));
 
   data.clear();
   /* Name of the file to  be opened. */
-  dataFileName = QFileDialog::getOpenFileName(this, tr("Open file"),
-                                              QDir::currentPath(),
-                                              tr("Text files (*.txt);;"
-                                                 "All files (*)"));
+  dataFileName = QFileDialog::getOpenFileName(this, openFile,
+                                              QDir::currentPath(), textOrAny);
 
   if (!dataFileName.isEmpty()) {
     /* The file itself. */
