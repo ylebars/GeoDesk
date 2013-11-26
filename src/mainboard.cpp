@@ -29,6 +29,7 @@
  * \date 2013/11/06
  * \date 2013/11/12
  * \date 2013/11/22
+ * \date 2013/11/26
  */
 
 #include <QFileDialog>
@@ -177,14 +178,27 @@ void GUI::MainBoard::on_actionLoadReferencePoints_triggered () {
   if (!referencePointFileName.isEmpty()) {
     /* The file itself. */
     QFile file (referencePointFileName);
-    QFile file (dataFileName);
     if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-      
+      /* Stream on the file. */
+      QTextStream referencePointFileStream (&file);
+
+      while (!referencePointFileStream.atEnd()) {
+        /* Point coordinates in image referential. */
+        Point2D image;
+        /* Point coordinates in geographical referential. */
+        Point2D geographic;
+        referencePointFileStream >> image.x() >> image.y()
+                                 >> geographic.x() >> geographic.y();
+        /* New reference point. */
+        const ReferencePointType referencePoint =
+          std::make_pair(image, geographic);
+        referencePointList.push_back(referencePoint);
+      }
     }
     else {
       QMessageBox::critical(this, tr("Error"),
                             tr("File named \"%1\" cannot "
-                               "be opened.").arg(dataFileName));
+                               "be opened.").arg(referencePointFileName));
     }
     ui.statusbar->showMessage(done);
   }
