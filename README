@@ -5,8 +5,7 @@ GeoDesk is a tool to get geographical data from digitalised maps.
 (<http://www.boost.org/>) version 1.31.1 or greater, library Qt4
 (<http://qt-project.org/>) version 4.6 or greater, library Eigen
 (<http://eigen.tuxfamily.org/index.php?title=Main_Page>) version 3.0.0 or
-greater, library GDAL (<http://www.gdal.org/>) version 1.0 or greater, and
-Doxygen (<http://www.stack.nl/~dimitri/doxygen/>) to generate the
+greater, and Doxygen (<http://www.stack.nl/~dimitri/doxygen/>) to generate the
 documentation.
 
   Compile GeoDesk is pretty straightforward. We recommend you create a directory
