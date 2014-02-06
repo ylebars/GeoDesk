@@ -6,6 +6,7 @@
  * \date 2013/06/19
  * \date 2013/07/01
  * \date 2014/02/05
+ * \date 2014/02/06
  */
 
 /**
@@ -26,6 +27,9 @@
  * Tarball: <https://github.com/ylebars/GeoDesk/tarball/master>
  *
  * Zip archive: <https://github.com/ylebars/GeoDesk/zipball/master>
+ *
+ * Wiki (user's guide and coding guidance):
+ * <https://github.com/ylebars/GeoDesk/wiki>
  */
 
 #include <config.hpp>
