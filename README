@@ -38,7 +38,7 @@ documentation for more details.
 
     $ geodesk --help
 
-  The documentation generates main pages.
+  The documentation generates man pages.
 
   If the compiler you are using is GCC, we suggest you set the following
 variables (adapt this to your compiler if needed):

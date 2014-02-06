@@ -5,6 +5,7 @@
  * \version 1.0
  * \date 2013/06/19
  * \date 2013/07/01
+ * \date 2014/02/05
  */
 
 /**
@@ -19,6 +20,12 @@
  *
  *      -h [ --help ]         Display help message.
  *      -v [ --version ]      Display program version.
+ *
+ * View on GitHub: <https://github.com/ylebars/GeoDesk>
+ *
+ * Tarball: <https://github.com/ylebars/GeoDesk/tarball/master>
+ *
+ * Zip archive: <https://github.com/ylebars/GeoDesk/zipball/master>
  */
 
 #include <config.hpp>
