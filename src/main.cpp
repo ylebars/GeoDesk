@@ -22,14 +22,14 @@
  *      -h [ --help ]         Display help message.
  *      -v [ --version ]      Display program version.
  *
+ * Wiki (user's guide and coding guidance):
+ * <https://github.com/ylebars/GeoDesk/wiki>
+ *
  * View on GitHub: <https://github.com/ylebars/GeoDesk>
  *
  * Tarball: <https://github.com/ylebars/GeoDesk/tarball/master>
  *
  * Zip archive: <https://github.com/ylebars/GeoDesk/zipball/master>
- *
- * Wiki (user's guide and coding guidance):
- * <https://github.com/ylebars/GeoDesk/wiki>
  */
 
 #include <config.hpp>
