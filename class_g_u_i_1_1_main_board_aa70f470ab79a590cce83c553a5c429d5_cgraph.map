@@ -1,0 +1,5 @@
+<map id="GUI::MainBoard::mousePressEvent" name="GUI::MainBoard::mousePressEvent">
+<area shape="rect" id="node3" href="$namespace_projection.html#a905cfe4d56a74c82abeeb29c61895176" title="Compute the projection coefficients. " alt="" coords="261,5,485,33"/>
+<area shape="rect" id="node5" href="$class_projection_1_1_point2_d.html#a53a681d9210c48b7190bb381134996d7" title="Access to abscissa, modification is not possible. " alt="" coords="295,55,452,83"/>
+<area shape="rect" id="node7" href="$class_projection_1_1_point2_d.html#a23114582092867f2ab8274c44b8c9428" title="Access to ordinate, modification is not possible. " alt="" coords="295,106,452,134"/>
+</map>
