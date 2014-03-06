@@ -101,111 +101,113 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment"> * \version 1.0</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment"> * \date 2013/06/27</span></div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="comment"> * \date 2013/06/28</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="comment"> */</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#include &lt;boost/concept_check.hpp&gt;</span></div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &lt;cassert&gt;</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#include &lt;eigen3/Eigen/Dense&gt;</span></div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="comment">/// \brief Namespace for projection computations.</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno"><a class="line" href="namespace_projection.html">   20</a></span>&#160;<span class="comment"></span><span class="keyword">namespace </span>Projection {<span class="comment"></span></div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment">  /// \brief Class for 2D points.</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno"><a class="line" href="class_projection_1_1_point2_d.html">   22</a></span>&#160;<span class="comment"></span>  <span class="keyword">class </span><a class="code" href="class_projection_1_1_point2_d.html">Point2D</a> {</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <span class="keyword">public</span>:<span class="comment"></span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="comment">      /**</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="comment">       * \brief Construct a point with two double.</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="comment">       * \param _x Abscissa.</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="comment">       * \param _y Ordinate.</span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="comment">       */</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="class_projection_1_1_point2_d.html#ace6b33172e0adf49d997b02914a1a50e">   29</a></span>&#160;      <a class="code" href="class_projection_1_1_point2_d.html#ace6b33172e0adf49d997b02914a1a50e">Point2D</a> (<span class="keywordtype">double</span> _x = 0., <span class="keywordtype">double</span> _y = 0.): x_ (_x), y_ (_y) {}</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="comment">      /**</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="comment">       * \brief Copy constructor.</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="comment">       * \param p Point2D to be copied.</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="comment">       */</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="class_projection_1_1_point2_d.html#a2afc6721af5b89c7c8d3c97c223c8603">   35</a></span>&#160;      <a class="code" href="class_projection_1_1_point2_d.html#a2afc6721af5b89c7c8d3c97c223c8603">Point2D</a> (<span class="keyword">const</span> <a class="code" href="class_projection_1_1_point2_d.html">Point2D</a> &amp;p): x_ (p.x_), y_ (p.y_) {}</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="comment">      /// \brief Destructor.</span></div>
-<div class="line"><a name="l00038"></a><span class="lineno"><a class="line" href="class_projection_1_1_point2_d.html#ae2cd2b495262a0ba568c3fa96f902c9a">   38</a></span>&#160;<span class="comment"></span>      <a class="code" href="class_projection_1_1_point2_d.html#ae2cd2b495262a0ba568c3fa96f902c9a">~Point2D</a> () {}</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="comment">      /// \brief Access to abscissa, modification is not possible.</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="class_projection_1_1_point2_d.html#a53a681d9210c48b7190bb381134996d7">   41</a></span>&#160;<span class="comment"></span>      <span class="keywordtype">double</span> <a class="code" href="class_projection_1_1_point2_d.html#a53a681d9210c48b7190bb381134996d7">x</a> ()<span class="keyword"> const </span>{<span class="keywordflow">return</span> x_;}</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="comment">      /// \brief Access to abscissa, modification is possible.</span></div>
-<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="class_projection_1_1_point2_d.html#a760ada94b0eb963a3e6f97309bdd06f4">   44</a></span>&#160;<span class="comment"></span>      <span class="keywordtype">double</span> &amp;<a class="code" href="class_projection_1_1_point2_d.html#a760ada94b0eb963a3e6f97309bdd06f4">x</a> () {<span class="keywordflow">return</span> x_;}</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="comment">      /// \brief Access to ordinate, modification is not possible.</span></div>
-<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="class_projection_1_1_point2_d.html#a23114582092867f2ab8274c44b8c9428">   47</a></span>&#160;<span class="comment"></span>      <span class="keywordtype">double</span> <a class="code" href="class_projection_1_1_point2_d.html#a23114582092867f2ab8274c44b8c9428">y</a> ()<span class="keyword"> const </span>{<span class="keywordflow">return</span> y_;}</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="comment">      /// \brief Access to ordinate, modification is possible.</span></div>
-<div class="line"><a name="l00050"></a><span class="lineno"><a class="line" href="class_projection_1_1_point2_d.html#a41443ad46a35484bfc4f0e6c40929ba5">   50</a></span>&#160;<span class="comment"></span>      <span class="keywordtype">double</span> &amp;<a class="code" href="class_projection_1_1_point2_d.html#a41443ad46a35484bfc4f0e6c40929ba5">y</a> () {<span class="keywordflow">return</span> y_;}</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="comment">      /**</span></div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="comment">       * \brief Copy operator.</span></div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="comment">       * \param p Point2D to be copied.</span></div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="comment">       * \return A reference to current point.</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="comment">       */</span></div>
-<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="class_projection_1_1_point2_d.html#af8b7c8ba0367233c4a386a325265b535">   57</a></span>&#160;      <a class="code" href="class_projection_1_1_point2_d.html">Point2D</a> &amp;<a class="code" href="class_projection_1_1_point2_d.html#af8b7c8ba0367233c4a386a325265b535">operator = </a>(<span class="keyword">const</span> <a class="code" href="class_projection_1_1_point2_d.html">Point2D</a> &amp;p) {</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        x_ = p.x_;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        y_ = p.y_;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;      }</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="keyword">private</span>:<span class="comment"></span></div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="comment">      /// \brief Abscissa.</span></div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="comment"></span>      <span class="keywordtype">double</span> x_;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="comment">      /// \brief Ordinate;</span></div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="comment"></span>      <span class="keywordtype">double</span> y_;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  };</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="comment">  /// \brief Type for projection coefficients.</span></div>
-<div class="line"><a name="l00072"></a><span class="lineno"><a class="line" href="namespace_projection.html#a8b0a0e4806fe6488e9c3cd033820df8e">   72</a></span>&#160;<span class="comment"></span>  <span class="keyword">typedef</span> Eigen::Matrix&lt;double, 3, 2&gt; <a class="code" href="namespace_projection.html#a8b0a0e4806fe6488e9c3cd033820df8e">Coefficients</a>;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="comment">  /**</span></div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="comment">   * \brief Compute the projection coefficients.</span></div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="comment">   * \param r1 Vector containing reference points in image coordinates.</span></div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="comment">   * \param r2 Vector containing reference points in geographical coordinates.</span></div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="comment">   * \return Vector containing projection coefficients.</span></div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="comment">   *</span></div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="comment">   * Information on coefficients can be found at:</span></div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="comment">   * &lt;http://en.wikipedia.org/wiki/World_file&gt;</span></div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="comment">   */</span></div>
-<div class="line"><a name="l00083"></a><span class="lineno"><a class="line" href="namespace_projection.html#a905cfe4d56a74c82abeeb29c61895176">   83</a></span>&#160;  <span class="keyword">inline</span> <a class="code" href="namespace_projection.html#a8b0a0e4806fe6488e9c3cd033820df8e">Coefficients</a> <a class="code" href="namespace_projection.html#a905cfe4d56a74c82abeeb29c61895176">computeCoefficients</a> (<span class="keyword">const</span> std::vector&lt;Point2D&gt; &amp;r1,</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;                                           <span class="keyword">const</span> std::vector&lt;Point2D&gt; &amp;r2) {</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    assert(r1.size() == 3);</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    assert(r2.size() == 3);</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <span class="comment">/* Matrix to compute coefficients. */</span></div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    Eigen::Matrix3d a;</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    a &lt;&lt; r1[0].x(), r1[0].y(), 1.,</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;         r1[1].x(), r1[1].y(), 1.,</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;         r1[2].x(), r1[2].y(), 1.;</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    <span class="comment">/* Matrix of points in geographical coordinates. */</span></div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    <a class="code" href="namespace_projection.html#a8b0a0e4806fe6488e9c3cd033820df8e">Coefficients</a> b;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    b &lt;&lt; r2[0].x(), r2[0].y(),</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;         r2[1].x(), r2[1].y(),</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;         r2[2].x(), r2[2].y();</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    <span class="keywordflow">return</span> a.fullPivLu().solve(b);</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;  }</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;}</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;<span class="preprocessor">#endif  // #ifndef PROJECTION_HPP</span></div>
-<div class="ttc" id="class_projection_1_1_point2_d_html_ace6b33172e0adf49d997b02914a1a50e"><div class="ttname"><a href="class_projection_1_1_point2_d.html#ace6b33172e0adf49d997b02914a1a50e">Projection::Point2D::Point2D</a></div><div class="ttdeci">Point2D(double _x=0., double _y=0.)</div><div class="ttdoc">Construct a point with two double. </div><div class="ttdef"><b>Definition:</b> <a href="projection_8hpp_source.html#l00029">projection.hpp:29</a></div></div>
-<div class="ttc" id="class_projection_1_1_point2_d_html"><div class="ttname"><a href="class_projection_1_1_point2_d.html">Projection::Point2D</a></div><div class="ttdoc">Class for 2D points. </div><div class="ttdef"><b>Definition:</b> <a href="projection_8hpp_source.html#l00022">projection.hpp:22</a></div></div>
-<div class="ttc" id="class_projection_1_1_point2_d_html_a41443ad46a35484bfc4f0e6c40929ba5"><div class="ttname"><a href="class_projection_1_1_point2_d.html#a41443ad46a35484bfc4f0e6c40929ba5">Projection::Point2D::y</a></div><div class="ttdeci">double &amp; y()</div><div class="ttdoc">Access to ordinate, modification is possible. </div><div class="ttdef"><b>Definition:</b> <a href="projection_8hpp_source.html#l00050">projection.hpp:50</a></div></div>
-<div class="ttc" id="class_projection_1_1_point2_d_html_a760ada94b0eb963a3e6f97309bdd06f4"><div class="ttname"><a href="class_projection_1_1_point2_d.html#a760ada94b0eb963a3e6f97309bdd06f4">Projection::Point2D::x</a></div><div class="ttdeci">double &amp; x()</div><div class="ttdoc">Access to abscissa, modification is possible. </div><div class="ttdef"><b>Definition:</b> <a href="projection_8hpp_source.html#l00044">projection.hpp:44</a></div></div>
-<div class="ttc" id="namespace_projection_html_a8b0a0e4806fe6488e9c3cd033820df8e"><div class="ttname"><a href="namespace_projection.html#a8b0a0e4806fe6488e9c3cd033820df8e">Projection::Coefficients</a></div><div class="ttdeci">Eigen::Matrix&lt; double, 3, 2 &gt; Coefficients</div><div class="ttdoc">Type for projection coefficients. </div><div class="ttdef"><b>Definition:</b> <a href="projection_8hpp_source.html#l00072">projection.hpp:72</a></div></div>
-<div class="ttc" id="namespace_projection_html_a905cfe4d56a74c82abeeb29c61895176"><div class="ttname"><a href="namespace_projection.html#a905cfe4d56a74c82abeeb29c61895176">Projection::computeCoefficients</a></div><div class="ttdeci">Coefficients computeCoefficients(const std::vector&lt; Point2D &gt; &amp;r1, const std::vector&lt; Point2D &gt; &amp;r2)</div><div class="ttdoc">Compute the projection coefficients. </div><div class="ttdef"><b>Definition:</b> <a href="projection_8hpp_source.html#l00083">projection.hpp:83</a></div></div>
-<div class="ttc" id="class_projection_1_1_point2_d_html_a23114582092867f2ab8274c44b8c9428"><div class="ttname"><a href="class_projection_1_1_point2_d.html#a23114582092867f2ab8274c44b8c9428">Projection::Point2D::y</a></div><div class="ttdeci">double y() const </div><div class="ttdoc">Access to ordinate, modification is not possible. </div><div class="ttdef"><b>Definition:</b> <a href="projection_8hpp_source.html#l00047">projection.hpp:47</a></div></div>
-<div class="ttc" id="class_projection_1_1_point2_d_html_ae2cd2b495262a0ba568c3fa96f902c9a"><div class="ttname"><a href="class_projection_1_1_point2_d.html#ae2cd2b495262a0ba568c3fa96f902c9a">Projection::Point2D::~Point2D</a></div><div class="ttdeci">~Point2D()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="projection_8hpp_source.html#l00038">projection.hpp:38</a></div></div>
-<div class="ttc" id="class_projection_1_1_point2_d_html_a2afc6721af5b89c7c8d3c97c223c8603"><div class="ttname"><a href="class_projection_1_1_point2_d.html#a2afc6721af5b89c7c8d3c97c223c8603">Projection::Point2D::Point2D</a></div><div class="ttdeci">Point2D(const Point2D &amp;p)</div><div class="ttdoc">Copy constructor. </div><div class="ttdef"><b>Definition:</b> <a href="projection_8hpp_source.html#l00035">projection.hpp:35</a></div></div>
-<div class="ttc" id="class_projection_1_1_point2_d_html_af8b7c8ba0367233c4a386a325265b535"><div class="ttname"><a href="class_projection_1_1_point2_d.html#af8b7c8ba0367233c4a386a325265b535">Projection::Point2D::operator=</a></div><div class="ttdeci">Point2D &amp; operator=(const Point2D &amp;p)</div><div class="ttdoc">Copy operator. </div><div class="ttdef"><b>Definition:</b> <a href="projection_8hpp_source.html#l00057">projection.hpp:57</a></div></div>
-<div class="ttc" id="class_projection_1_1_point2_d_html_a53a681d9210c48b7190bb381134996d7"><div class="ttname"><a href="class_projection_1_1_point2_d.html#a53a681d9210c48b7190bb381134996d7">Projection::Point2D::x</a></div><div class="ttdeci">double x() const </div><div class="ttdoc">Access to abscissa, modification is not possible. </div><div class="ttdef"><b>Definition:</b> <a href="projection_8hpp_source.html#l00041">projection.hpp:41</a></div></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="comment"> * \date 2014/03/06</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="comment"> */</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &lt;boost/concept_check.hpp&gt;</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &lt;cassert&gt;</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include &lt;eigen3/Eigen/Dense&gt;</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="comment">/// \brief Namespace for projection computations.</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno"><a class="line" href="namespace_projection.html">   21</a></span>&#160;<span class="comment"></span><span class="keyword">namespace </span>Projection {<span class="comment"></span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">  /// \brief Class for 2D points.</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno"><a class="line" href="class_projection_1_1_point2_d.html">   23</a></span>&#160;<span class="comment"></span>  <span class="keyword">class </span><a class="code" href="class_projection_1_1_point2_d.html">Point2D</a> {</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <span class="keyword">public</span>:<span class="comment"></span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="comment">      /**</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="comment">       * \brief Construct a point with two double.</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="comment">       * \param _x Abscissa.</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="comment">       * \param _y Ordinate.</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="comment">       */</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno"><a class="line" href="class_projection_1_1_point2_d.html#ace6b33172e0adf49d997b02914a1a50e">   30</a></span>&#160;      <a class="code" href="class_projection_1_1_point2_d.html#ace6b33172e0adf49d997b02914a1a50e">Point2D</a> (<span class="keywordtype">double</span> _x = 0., <span class="keywordtype">double</span> _y = 0.): x_ (_x), y_ (_y) {}</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="comment">      /**</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="comment">       * \brief Copy constructor.</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="comment">       * \param p Point2D to be copied.</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="comment">       */</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="class_projection_1_1_point2_d.html#a2afc6721af5b89c7c8d3c97c223c8603">   36</a></span>&#160;      <a class="code" href="class_projection_1_1_point2_d.html#a2afc6721af5b89c7c8d3c97c223c8603">Point2D</a> (<span class="keyword">const</span> <a class="code" href="class_projection_1_1_point2_d.html">Point2D</a> &amp;p): x_ (p.x_), y_ (p.y_) {}</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="comment">      /// \brief Destructor.</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="class_projection_1_1_point2_d.html#ae2cd2b495262a0ba568c3fa96f902c9a">   39</a></span>&#160;<span class="comment"></span>      <a class="code" href="class_projection_1_1_point2_d.html#ae2cd2b495262a0ba568c3fa96f902c9a">~Point2D</a> () {}</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="comment">      /// \brief Access to abscissa, modification is not possible.</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno"><a class="line" href="class_projection_1_1_point2_d.html#a53a681d9210c48b7190bb381134996d7">   42</a></span>&#160;<span class="comment"></span>      <span class="keywordtype">double</span> <a class="code" href="class_projection_1_1_point2_d.html#a53a681d9210c48b7190bb381134996d7">x</a> ()<span class="keyword"> const </span>{<span class="keywordflow">return</span> x_;}</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="comment">      /// \brief Access to abscissa, modification is possible.</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno"><a class="line" href="class_projection_1_1_point2_d.html#a760ada94b0eb963a3e6f97309bdd06f4">   45</a></span>&#160;<span class="comment"></span>      <span class="keywordtype">double</span> &amp;<a class="code" href="class_projection_1_1_point2_d.html#a760ada94b0eb963a3e6f97309bdd06f4">x</a> () {<span class="keywordflow">return</span> x_;}</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="comment">      /// \brief Access to ordinate, modification is not possible.</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="class_projection_1_1_point2_d.html#a23114582092867f2ab8274c44b8c9428">   48</a></span>&#160;<span class="comment"></span>      <span class="keywordtype">double</span> <a class="code" href="class_projection_1_1_point2_d.html#a23114582092867f2ab8274c44b8c9428">y</a> ()<span class="keyword"> const </span>{<span class="keywordflow">return</span> y_;}</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="comment">      /// \brief Access to ordinate, modification is possible.</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="class_projection_1_1_point2_d.html#a41443ad46a35484bfc4f0e6c40929ba5">   51</a></span>&#160;<span class="comment"></span>      <span class="keywordtype">double</span> &amp;<a class="code" href="class_projection_1_1_point2_d.html#a41443ad46a35484bfc4f0e6c40929ba5">y</a> () {<span class="keywordflow">return</span> y_;}</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="comment">      /**</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="comment">       * \brief Copy operator.</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="comment">       * \param p Point2D to be copied.</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="comment">       * \return A reference to current point.</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="comment">       */</span></div>
+<div class="line"><a name="l00058"></a><span class="lineno"><a class="line" href="class_projection_1_1_point2_d.html#af8b7c8ba0367233c4a386a325265b535">   58</a></span>&#160;      <a class="code" href="class_projection_1_1_point2_d.html">Point2D</a> &amp;<a class="code" href="class_projection_1_1_point2_d.html#af8b7c8ba0367233c4a386a325265b535">operator = </a>(<span class="keyword">const</span> <a class="code" href="class_projection_1_1_point2_d.html">Point2D</a> &amp;p) {</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        x_ = p.x_;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        y_ = p.y_;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;      }</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keyword">private</span>:<span class="comment"></span></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="comment">      /// \brief Abscissa.</span></div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="comment"></span>      <span class="keywordtype">double</span> x_;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="comment">      /// \brief Ordinate;</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="comment"></span>      <span class="keywordtype">double</span> y_;</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  };</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="comment">  /// \brief Type for projection coefficients.</span></div>
+<div class="line"><a name="l00073"></a><span class="lineno"><a class="line" href="namespace_projection.html#a8b0a0e4806fe6488e9c3cd033820df8e">   73</a></span>&#160;<span class="comment"></span>  <span class="keyword">typedef</span> Eigen::Matrix&lt;double, 3, 2&gt; <a class="code" href="namespace_projection.html#a8b0a0e4806fe6488e9c3cd033820df8e">Coefficients</a>;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="comment">  /**</span></div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="comment">   * \brief Compute the projection coefficients.</span></div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="comment">   * \param r1 Vector containing reference points in image coordinates.</span></div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="comment">   * \param r2 Vector containing reference points in geographical coordinates.</span></div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="comment">   * \return Vector containing projection coefficients.</span></div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="comment">   *</span></div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="comment">   * Information on coefficients can be found at:</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="comment">   * &lt;http://en.wikipedia.org/wiki/World_file&gt;</span></div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="comment">   */</span></div>
+<div class="line"><a name="l00084"></a><span class="lineno"><a class="line" href="namespace_projection.html#a905cfe4d56a74c82abeeb29c61895176">   84</a></span>&#160;  <span class="keyword">inline</span> <a class="code" href="namespace_projection.html#a8b0a0e4806fe6488e9c3cd033820df8e">Coefficients</a> <a class="code" href="namespace_projection.html#a905cfe4d56a74c82abeeb29c61895176">computeCoefficients</a> (<span class="keyword">const</span> std::vector&lt;Point2D&gt; &amp;r1,</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;                                           <span class="keyword">const</span> std::vector&lt;Point2D&gt; &amp;r2) {</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    assert(r1.size() == 3);</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    assert(r2.size() == 3);</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <span class="comment">/* Matrix to compute coefficients. */</span></div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    Eigen::Matrix3d a;</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    a &lt;&lt; r1[0].x(), r1[0].y(), 1.,</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;         r1[1].x(), r1[1].y(), 1.,</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;         r1[2].x(), r1[2].y(), 1.;</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    <span class="comment">/* Matrix of points in geographical coordinates. */</span></div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    <a class="code" href="namespace_projection.html#a8b0a0e4806fe6488e9c3cd033820df8e">Coefficients</a> b;</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    b &lt;&lt; r2[0].x(), r2[0].y(),</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;         r2[1].x(), r2[1].y(),</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;         r2[2].x(), r2[2].y();</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="comment">//     return a.fullPivLu().solve(b);</span></div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    <span class="keywordflow">return</span> a.jacobiSvd(Eigen::ComputeThinU | Eigen::ComputeThinV).solve(b);</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;  }</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;}</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="preprocessor">#endif  // #ifndef PROJECTION_HPP</span></div>
+<div class="ttc" id="class_projection_1_1_point2_d_html_ace6b33172e0adf49d997b02914a1a50e"><div class="ttname"><a href="class_projection_1_1_point2_d.html#ace6b33172e0adf49d997b02914a1a50e">Projection::Point2D::Point2D</a></div><div class="ttdeci">Point2D(double _x=0., double _y=0.)</div><div class="ttdoc">Construct a point with two double. </div><div class="ttdef"><b>Definition:</b> <a href="projection_8hpp_source.html#l00030">projection.hpp:30</a></div></div>
+<div class="ttc" id="class_projection_1_1_point2_d_html"><div class="ttname"><a href="class_projection_1_1_point2_d.html">Projection::Point2D</a></div><div class="ttdoc">Class for 2D points. </div><div class="ttdef"><b>Definition:</b> <a href="projection_8hpp_source.html#l00023">projection.hpp:23</a></div></div>
+<div class="ttc" id="class_projection_1_1_point2_d_html_a41443ad46a35484bfc4f0e6c40929ba5"><div class="ttname"><a href="class_projection_1_1_point2_d.html#a41443ad46a35484bfc4f0e6c40929ba5">Projection::Point2D::y</a></div><div class="ttdeci">double &amp; y()</div><div class="ttdoc">Access to ordinate, modification is possible. </div><div class="ttdef"><b>Definition:</b> <a href="projection_8hpp_source.html#l00051">projection.hpp:51</a></div></div>
+<div class="ttc" id="class_projection_1_1_point2_d_html_a760ada94b0eb963a3e6f97309bdd06f4"><div class="ttname"><a href="class_projection_1_1_point2_d.html#a760ada94b0eb963a3e6f97309bdd06f4">Projection::Point2D::x</a></div><div class="ttdeci">double &amp; x()</div><div class="ttdoc">Access to abscissa, modification is possible. </div><div class="ttdef"><b>Definition:</b> <a href="projection_8hpp_source.html#l00045">projection.hpp:45</a></div></div>
+<div class="ttc" id="namespace_projection_html_a8b0a0e4806fe6488e9c3cd033820df8e"><div class="ttname"><a href="namespace_projection.html#a8b0a0e4806fe6488e9c3cd033820df8e">Projection::Coefficients</a></div><div class="ttdeci">Eigen::Matrix&lt; double, 3, 2 &gt; Coefficients</div><div class="ttdoc">Type for projection coefficients. </div><div class="ttdef"><b>Definition:</b> <a href="projection_8hpp_source.html#l00073">projection.hpp:73</a></div></div>
+<div class="ttc" id="namespace_projection_html_a905cfe4d56a74c82abeeb29c61895176"><div class="ttname"><a href="namespace_projection.html#a905cfe4d56a74c82abeeb29c61895176">Projection::computeCoefficients</a></div><div class="ttdeci">Coefficients computeCoefficients(const std::vector&lt; Point2D &gt; &amp;r1, const std::vector&lt; Point2D &gt; &amp;r2)</div><div class="ttdoc">Compute the projection coefficients. </div><div class="ttdef"><b>Definition:</b> <a href="projection_8hpp_source.html#l00084">projection.hpp:84</a></div></div>
+<div class="ttc" id="class_projection_1_1_point2_d_html_a23114582092867f2ab8274c44b8c9428"><div class="ttname"><a href="class_projection_1_1_point2_d.html#a23114582092867f2ab8274c44b8c9428">Projection::Point2D::y</a></div><div class="ttdeci">double y() const </div><div class="ttdoc">Access to ordinate, modification is not possible. </div><div class="ttdef"><b>Definition:</b> <a href="projection_8hpp_source.html#l00048">projection.hpp:48</a></div></div>
+<div class="ttc" id="class_projection_1_1_point2_d_html_ae2cd2b495262a0ba568c3fa96f902c9a"><div class="ttname"><a href="class_projection_1_1_point2_d.html#ae2cd2b495262a0ba568c3fa96f902c9a">Projection::Point2D::~Point2D</a></div><div class="ttdeci">~Point2D()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="projection_8hpp_source.html#l00039">projection.hpp:39</a></div></div>
+<div class="ttc" id="class_projection_1_1_point2_d_html_a2afc6721af5b89c7c8d3c97c223c8603"><div class="ttname"><a href="class_projection_1_1_point2_d.html#a2afc6721af5b89c7c8d3c97c223c8603">Projection::Point2D::Point2D</a></div><div class="ttdeci">Point2D(const Point2D &amp;p)</div><div class="ttdoc">Copy constructor. </div><div class="ttdef"><b>Definition:</b> <a href="projection_8hpp_source.html#l00036">projection.hpp:36</a></div></div>
+<div class="ttc" id="class_projection_1_1_point2_d_html_af8b7c8ba0367233c4a386a325265b535"><div class="ttname"><a href="class_projection_1_1_point2_d.html#af8b7c8ba0367233c4a386a325265b535">Projection::Point2D::operator=</a></div><div class="ttdeci">Point2D &amp; operator=(const Point2D &amp;p)</div><div class="ttdoc">Copy operator. </div><div class="ttdef"><b>Definition:</b> <a href="projection_8hpp_source.html#l00058">projection.hpp:58</a></div></div>
+<div class="ttc" id="class_projection_1_1_point2_d_html_a53a681d9210c48b7190bb381134996d7"><div class="ttname"><a href="class_projection_1_1_point2_d.html#a53a681d9210c48b7190bb381134996d7">Projection::Point2D::x</a></div><div class="ttdeci">double x() const </div><div class="ttdoc">Access to abscissa, modification is not possible. </div><div class="ttdef"><b>Definition:</b> <a href="projection_8hpp_source.html#l00042">projection.hpp:42</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Feb 6 2014 17:48:15 for GeoDesk by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Mar 6 2014 18:19:24 for GeoDesk by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>
