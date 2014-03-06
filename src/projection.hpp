@@ -9,6 +9,7 @@
  * \version 1.0
  * \date 2013/06/27
  * \date 2013/06/28
+ * \date 2014/03/06
  */
 
 #include <boost/concept_check.hpp>
@@ -94,7 +95,8 @@ namespace Projection {
     b << r2[0].x(), r2[0].y(),
          r2[1].x(), r2[1].y(),
          r2[2].x(), r2[2].y();
-    return a.fullPivLu().solve(b);
+//     return a.fullPivLu().solve(b);
+    return a.jacobiSvd(Eigen::ComputeThinU | Eigen::ComputeThinV).solve(b);
   }
 }
 
