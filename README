@@ -40,8 +40,8 @@ documentation for more details.
 
   The documentation generates man pages.
 
-  If the compiler you are using is GCC, we suggest you set the following
-variables (adapt this to your compiler if needed):
+  If the compiler you are using is GCC on a x86_64 architecture, we suggest you
+set the following variables (adapt this to your compiler if needed):
 
 //Flags used by the compiler during debug builds.
 CMAKE_CXX_FLAGS_DEBUG:STRING=-g -std=c++11 -pedantic -Wall -pipe
@@ -52,7 +52,7 @@ CMAKE_CXX_FLAGS_MINSIZEREL:STRING=-std=c++11 -march=native -Os -DNDEBUG -pipe
 //Flags used by the compiler during release builds (/MD /Ob1 /Oi
 // /Ot /Oy /Gs will produce slightly less optimized but smaller
 // files).
-CMAKE_CXX_FLAGS_RELEASE:STRING=-std=c++11 -march=native -O2 -DNDEBUG -pipe -fomit-frame-pointer
+CMAKE_CXX_FLAGS_RELEASE:STRING=-std=c++11 -march=native -O3 -DNDEBUG -pipe
 
 //Flags used by the compiler during Release with Debug Info builds.
 CMAKE_CXX_FLAGS_RELWITHDEBINFO:STRING=-std=c++11 -march=native -O2 -g -pipe -fno-omit-frame-pointer
